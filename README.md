@@ -8,7 +8,7 @@ Thematically, this mod explores the evolution of personal computing from the DOS
 
 ## Implementation
 
-Built with Borland Turbo C + Turbo Assembler straight from the 80s, the source code originates from the [Cosmore](https://github.com/smitelli/cosmore) reverse-engineering project by Scott Smitelli & contributors. This mod wouldn't be possible without it and its accompanying [Cosmodoc](https://cosmodoc.org) documentation resource.
+Built with Borland Turbo C & Turbo Assembler straight from the 80s, the source code originates from the [Cosmore](https://github.com/smitelli/cosmore) reverse-engineering project by Scott Smitelli & contributors. This mod wouldn't be possible without it and its accompanying [Cosmodoc](https://cosmodoc.org) documentation resource.
 
 ## License
 
