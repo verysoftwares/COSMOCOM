@@ -66,4 +66,4 @@ game2.obj: game2.c
 $(OUTEXE): $(OBJS)
 	# tlink /c /d /s $(OBJS), $<, , $(LIBDIR)\C$(LIBMODEL).LIB
 	# needed to make a response file because the command got too long.
-	tlink @respfile
+	tlink @Respfile
