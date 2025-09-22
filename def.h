@@ -136,4 +136,4 @@ Size of the game window, not including the status bar and the one-tile black
 border at the top/left/right edges of the screen.
 */
 #define SCROLLW                 38
-#define SCROLLH                 18
+/*#define SCROLLH                 18*/

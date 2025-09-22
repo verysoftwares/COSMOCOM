@@ -20,7 +20,7 @@ EPISODE=0
 !endif
 
 # Configure these lines to match your Turbo C installation
-TCDIR=C:\TC20
+TCDIR=C:\COSMOCOM
 INCLUDEDIR=$(TCDIR)\INCLUDE
 LIBDIR=$(TCDIR)\LIB
 STARTUPDIR=$(TCDIR)\STARTUP
@@ -37,7 +37,7 @@ MODEL=l
 LIBMODEL=L
 LONGMODEL=LARGE
 
-OBJS=c0$(MODEL).obj main.obj game1.obj game2.obj
+OBJS=c0$(MODEL).obj main.obj game1.obj ctrlflow.obj groupf.obj input.obj player.obj actor.obj game2.obj game3.obj
 OUTEXE=cosmore$(EPISODE).exe
 
 all: $(OUTEXE)
@@ -64,4 +64,6 @@ game2.obj: game2.c
 	tcc -m$(MODEL) -I$(INCLUDEDIR) -DEPISODE=$(EPISODE) -c $<
 
 $(OUTEXE): $(OBJS)
-	tlink /c /d /s $(OBJS), $<, , $(LIBDIR)\C$(LIBMODEL).LIB
+	# tlink /c /d /s $(OBJS), $<, , $(LIBDIR)\C$(LIBMODEL).LIB
+	# needed to make a response file because the command got too long.
+	tlink @respfile

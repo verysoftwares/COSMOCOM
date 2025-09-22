@@ -476,7 +476,7 @@ static void InitializeInterruptRate(void)
 /*
 Handle global changes to the music state. [ID_SD, SD_SetMusicMode()]
 */
-static bool SetMusicState(bool state)
+bool SetMusicState(bool state)
 {
     volatile bool found;  /* Force compiler *not* to use a register var */
 
@@ -1455,125 +1455,11 @@ void CheckHighScoreAndShow(void)
 }
 
 /*
-Return a file pointer matching the passed group entry name and update
-lastGroupEntryLength with the size of the entry's data. This function tries, in
-order: entry inside the STN file, entry inside the VOL file, file in the current
-working directory with a name matching the passed entry name. If nothing is
-found, assuming the program doesn't crash due to performing a bunch of
-operations on a null pointer, return NULL.
-
-NOTE: This uses a 20-byte buffer and an 11-byte comparison on a file format
-whose entry names are each 12 bytes long. Fun ensues.
-
-NOTE: The STN/VOL format is not formally specified anywhere, so it's not clear
-if the offsets/lengths read from it are supposed to be interpreted as signed or
-unsigned. This function uses a bit of a mismash of the two.
-*/
-FILE *GroupEntryFp(char *entry_name)
-{
-    char header[1000];
-    char name[20];
-    FILE *fp;
-    dword offset;
-    int i;
-    bool found;
-
-    /* Make an uppercased copy of the entry name as recklessly as possible */
-    for (i = 0; i < 19; i++) {
-        name[i] = *(entry_name + i);
-    }
-    name[19] = '\0';
-    strupr(name);
-
-    /*
-    Attempt to read from the STN file
-    */
-    fp = fopen(stnGroupFilename, "rb");
-    found = false;
-    fread(header, 1, 960, fp);
-
-    /* Final iteration, if reached, will cause a read out of bounds */
-    for (i = 0; i < 980; i += 20) {
-        if (header[i] == '\0') break;  /* no more entries */
-
-        if (strncmp(header + i, name, 11) == 0) {
-            offset = i + 12;
-            found = true;
-        }
-    }
-
-    if (!found) {
-        fclose(fp);
-
-        /*
-        Attempt to read from the VOL file
-        */
-        fp = fopen(volGroupFilename, "rb");
-        fread(header, 1, 960, fp);
-
-        /* Final iteration, if reached, will cause a read out of bounds */
-        for (i = 0; i < 980; i += 20) {
-            if (header[i] == '\0') break;  /* no more entries */
-
-            if (strncmp(header + i, name, 11) == 0) {
-                offset = i + 12;
-                found = true;
-            }
-        }
-
-        if (!found) {
-            fclose(fp);
-
-            /*
-            Attempt to read from the current working directory
-            */
-            fp = fopen(entry_name, "rb");
-            i = fileno(fp);
-            lastGroupEntryLength = filelength(i);
-
-            return fp;
-        }
-    }
-
-    /* Here `offset` points to the entry's header data */
-    fseek(fp, offset, SEEK_SET);
-    fread(&offset, 4, 1, fp);
-    fread(&lastGroupEntryLength, 4, 1, fp);
-
-    /* Now `offset` points to the first byte of the entry's data */
-    fseek(fp, offset, SEEK_SET);
-
-    return fp;
-}
-
-/*
 Return true if there is no AdLib hardware installed, and false otherwise.
 */
 static bbool IsAdLibAbsent(void)
 {
     return !isAdLibPresentPrivate;
-}
-
-/*
-Read music data from the group entry referred to by the music number, and store
-it into the passed Music pointer.
-*/
-static Music *LoadMusicData(word music_num, Music *dest)
-{
-    FILE *fp;
-    Music *localdest = dest;  /* not clear why this copy is needed */
-
-    miscDataContents = IMAGE_NONE;
-
-    fp = GroupEntryFp(musicNames[music_num]);
-    fread(&dest->datahead, 1, (word)lastGroupEntryLength + 2, fp);
-    localdest->length = (word)lastGroupEntryLength;
-
-    SetMusicState(true);
-
-    fclose(fp);
-
-    return localdest;
 }
 
 #if EPISODE == 1
@@ -2567,16 +2453,22 @@ Show the copyright year, version number, and abbreviated credits during startup.
 */
 void ShowCopyright(void)
 {
-    word x = UnfoldTextFrame(4, 13, 26, "A game by", "Copyright (c) 1992");
-    DrawTextLine(x,      7,  "     Todd J Replogle");
-    DrawTextLine(x + 11, 9,  "and");
-    DrawTextLine(x,      11, "\xFD""027   Stephen A Hornback\xFD""004");
+    word x = UnfoldTextFrame(4, 13, 26, "Mod project by", "Copyright (c) 1992, 2025");
+    DrawTextLine(x,      6,  "     Leonard Somero");
+    DrawTextLine(x,      8,  "       Cosmore by");
+    DrawTextLine(x,      9,  "     Scott Smitelli");
+    DrawTextLine(x,      11, "    Original game by");
+    DrawTextLine(x,      12, "     Todd J Replogle");
+    DrawTextLine(x,      13, "   Stephen A Hornback");
+    DrawTextLine(x,      11, "\xFD""027                     \xFD""004");
 
-#ifdef VANITY
-    DrawTextLine(x,      13, "      Cosmore " GAME_VERSION);
-#else
-    DrawTextLine(x,      13, "      Version " GAME_VERSION);
-#endif  /* VANITY */
+/*#ifdef VANITY*/
+/*    DrawTextLine(x,      14, "      Cosmore " GAME_VERSION);*/
+/*#else*/
+/*    DrawTextLine(x,      14, "      Version " GAME_VERSION);*/
+/*#endif*/  /* VANITY */
+
+    StartSound(SND_HIGH_SCORE_DISPLAY);
 
     WaitSoft(700);
     FadeOut();
@@ -2979,31 +2871,31 @@ void LoadConfigurationData(char *filename)
         isSoundEnabled = true;
 
         highScoreValues[0] = 1000000L;
-        strcpy(highScoreNames[0], "BART");
+        strcpy(highScoreNames[0], "KRIS");
 
         highScoreValues[1] = 900000L;
-        strcpy(highScoreNames[1], "LISA");
+        strcpy(highScoreNames[1], "SUSIE");
 
         highScoreValues[2] = 800000L;
-        strcpy(highScoreNames[2], "MARGE");
+        strcpy(highScoreNames[2], "RALSEI");
 
         highScoreValues[3] = 700000L;
-        strcpy(highScoreNames[3], "ITCHY");
+        strcpy(highScoreNames[3], "NOELLE");
 
         highScoreValues[4] = 600000L;
-        strcpy(highScoreNames[4], "SCRATCHY");
+        strcpy(highScoreNames[4], "BERDLY");
 
         highScoreValues[5] = 500000L;
-        strcpy(highScoreNames[5], "MR. BURNS");
+        strcpy(highScoreNames[5], "SPAMTON");
 
         highScoreValues[6] = 400000L;
-        strcpy(highScoreNames[6], "MAGGIE");
+        strcpy(highScoreNames[6], "LANCER");
 
         highScoreValues[7] = 300000L;
-        strcpy(highScoreNames[7], "KRUSTY");
+        strcpy(highScoreNames[7], "QUEEN");
 
         highScoreValues[8] = 200000L;
-        strcpy(highScoreNames[8], "HOMER");
+        strcpy(highScoreNames[8], "GERSON");
     } else {
         int i;
 

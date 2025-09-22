@@ -13,10 +13,10 @@
  *                      COSMORE HEADER for EPISODE TWO                       *
  *****************************************************************************/
 
-#define END_SCREEN              "END2.MNI"
+#define END_SCREEN              "TITLE2.MNI"
 #define EXIT_TEXT_PAGE          "COSMO2.MNI"
 #define FILENAME_BASE           "COSMO2"
-#define TITLE_SCREEN            "TITLE2.MNI"
+#define TITLE_SCREEN            "END2.MNI"
 #define LIGHT_CAST_DISTANCE     13
 #define SAVE_SLOT_INDEX         9
 

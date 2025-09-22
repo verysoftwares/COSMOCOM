@@ -1,4 +1,5 @@
 .DS_Store
+DOCUMENT
 *.[Ee][Xx][Ee]
 *.[Mm][Aa][Pp]
 *.[Oo][Bb][Jj]
@@ -7,3 +8,4 @@ COSMO?.CFG
 COSMO?.STN
 COSMO?.SV?
 COSMO?.VOL
+COSMOCOM.TXT
