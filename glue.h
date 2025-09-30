@@ -337,19 +337,25 @@ word DebugPage(word, word, bool);
 word DebugRow(word, word, word, bool, bool);
 void DebugSprite(word, word, word, bool);
 void DebugSpriteBG(word, word, word);
-byte DebugKeyPause( /*word, word*/ );
+byte DebugKeyPause();
+
+void GenDrawTile(word, word, word);
 
 void LevelTest(void);
 void LevelLoad(word);
+void TileView(void);
 extern bbool level_edit;
 extern bbool edit_actors;
 
 typedef struct {
     word x, y;
     bbool active;
+    word tile;
 } Cursor;
 
 extern word scrollH;
+
+bbool cursor_move(Cursor *, word, word, word, word);
 
 /*****************************************************************************
  * actfunc.C                                                                 *

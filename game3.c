@@ -21,7 +21,7 @@ void GFXTest(void) {
 
         /* page transition */
         StartSound(SND_DESTROY_SATELLITE);
-        key = DebugKeyPause( /*start_spr, pagespr*/ );
+        key = DebugKeyPause();
         if (key==SCANCODE_ESC) {
             break;
         }
@@ -173,7 +173,7 @@ word DebugRow(word start_spr, word pagespr, word sy, bool new, bool observe) {
 
     return 0;
 }
-byte DebugKeyPause(/*word start_spr, word pagespr*/) {
+byte DebugKeyPause() {
     lastScancode = SCANCODE_NULL;  /* will get modified by the keyboard interrupt service */
 
     while ((lastScancode & 0x80) == 0) {
@@ -213,7 +213,7 @@ word DebugPage(word start_spr, word pagespr, bool observe) {
 
         if (spr>pagespr && !observe) {
             if (!skip) {
-                byte key = DebugKeyPause( /*orig_spr, pagespr*/ );
+                byte key = DebugKeyPause();
                 if (key==SCANCODE_ESC) {
                     return 999;
                 }
@@ -271,65 +271,30 @@ bbool tapped(word scn) {
     return false;
 }
 
-void TileView(void) {
-    word x, y;
-    word tile_start = 0;
-    word tile;
-    
-    SelectDrawPage(activePage);
-    SelectActivePage(activePage);
-    activePage = !activePage;
-    
-    while(1) {
-        ClearScreen2();
+/* to resolve the tile/masked tile dualism from a drawing standpoint */
+void GenDrawTile(word tile, word x, word y) {
+    if (tile < TILE_MASKED_0) DrawSolidTile(tile, y*320 + x);
+    else DrawMaskedTile(maskedTileData + tile, x, y);
+}
 
-        tile = tile_start;
-        for (y = 0; y < 25; y++) {
-            for (x = 0; x < 80; x++) {
-                if (tile < TILE_MASKED_0) {
-                    DrawSolidTile(tile+x%2*4, y*320 + x/2);
-                    tile+=4;
-                } else {
-                    DrawMaskedTile(maskedTileData + tile, x/2, y);
-                    tile++;
-                }
-                /* if (tile>tmax) goto adjust; */
-            }
-            WaitHard(1);
-        }
-adjust:
-        while(1) {
-            if (tapped(scancodeWest)) {
-                if (tile_start<25*80*4) tile_start=0; 
-                else tile_start=tile_start-25*80*4; 
-                break;
-            }
-            if (tapped(scancodeEast)) { 
-                /* if (tile_start>=tmax-25*80*4) tile_start=tmax-25*80*4; */
-                tile_start=tile_start+25*80*4; 
-                break; 
-            }
-            if (tapped(SCANCODE_ESC)) {
-                FadeOut();
-                ClearScreen();
-                SelectDrawPage(activePage);
-                SelectActivePage(activePage);
-                ClearScreen();
-                mtrans = true;
-                return;
-            }
-        }
-    }
+bbool cursor_move(Cursor *c, word xmin, word ymin, word xmax, word ymax) {
+    if (isKeyDown[scancodeNorth] && c->y > ymin) { c->y--; return true; }
+    if (isKeyDown[scancodeSouth] && c->y < ymax) { c->y++; return true; }
+    if (isKeyDown[scancodeWest] && c->x > xmin) { c->x--; return true; }
+    if (isKeyDown[scancodeEast] && c->x < xmax) { c->x++; return true; }
+    return false;
 }
 
 bbool edit_actors;
+Cursor c;
+word st;
 void LevelTest(void) {
-    word st;
-    Cursor c;
+    word *tile_at;
     bbool redraw = true;
 
     c.x = 1; c.y = 1;
     c.active = false;
+    c.tile = 0;
 
     t = 0; st = 0;
     ln = 4;
@@ -343,7 +308,9 @@ void LevelTest(void) {
     ClearScreen();
 
     while (1) {
-        if (redraw) {
+        tile_at = mapData.w + ((scrollY + c.y-1) << mapYPower) + (scrollX + c.x-1);
+                    
+        if (redraw || c.active) {
             SelectDrawPage(activePage);
 
             DrawMapRegion();
@@ -363,10 +330,10 @@ void LevelTest(void) {
                     sprintf(msg,"%u actors",numActors);
                     DrawTextLine(1,scrollH+1+h,msg); h++;
                 } else {
-                    word *tile_at; word i;
-                    tile_at = mapData.w + ((scrollY + c.y-1) << mapYPower) + (scrollX + c.x-1);
+                    word i;
                     sprintf(msg,"Tile #%u (%u,%u)",*tile_at,scrollX+c.x-1,scrollY+c.y-1);
                     DrawTextLine(1,scrollH+1+h,msg); h++;
+                    GenDrawTile(c.tile,c.x,c.y);
                     for (i=0; i<(t/4)%3; i++) LightenScreenTile(c.x, c.y);
                 }
             }
@@ -406,10 +373,20 @@ void LevelTest(void) {
                 redraw=true; 
             }
         } else {
-            if (isKeyDown[scancodeNorth] && c.y>1) { c.y--; if (!st) { StartSound(SND_PLAYER_FOOTSTEP); st=12; } redraw=true; }
-            if (isKeyDown[scancodeSouth] && c.y<scrollH) { c.y++; if (!st) { StartSound(SND_PLAYER_FOOTSTEP); st=12; } redraw=true; }
-            if (isKeyDown[scancodeWest] && c.x>1) { c.x--; if (!st) { StartSound(SND_PLAYER_FOOTSTEP); st=12; } redraw=true; }
-            if (isKeyDown[scancodeEast] && c.x<38) { c.x++; if (!st) { StartSound(SND_PLAYER_FOOTSTEP); st=12; } redraw=true; }
+            if (cursor_move(&c,1,1,38,scrollH)) {
+                if (!st) { StartSound(SND_PLAYER_FOOTSTEP); st=12; }
+                redraw=true;
+            }
+            if (tapped(SCANCODE_O)) {
+                *tile_at = c.tile;
+                StartSound(SND_PLACE_BOMB);
+                redraw=true;
+            }
+            if (tapped(SCANCODE_P)) {
+                c.tile = *tile_at;
+                StartSound(SND_TULIP_INGEST);
+                redraw=true;
+            }
         }
 
         WaitHard(1);
@@ -420,4 +397,68 @@ void LevelTest(void) {
     maxScrollY = (word)(0x10000L / (mapWidth * 2)) - scrollH;
     level_edit = false;
     mask_init = false;
+}
+
+word tile_start = 0;
+Cursor c2;
+void TileView(void) {
+    word x, y;
+    word tile;
+    word i;
+    
+    c2.x=0; c2.y=0;
+    c2.active=true;
+    c2.tile=0;
+
+    SelectDrawPage(activePage);
+    SelectActivePage(activePage);
+    activePage = !activePage;
+    
+    while(1) {
+        ClearScreen2();
+
+        tile = tile_start;
+
+        for (y = 0; y < 25; y++) {
+            for (x = 0; x < 40; x++) {
+                GenDrawTile(tile, x, y);
+
+                if (tile < TILE_MASKED_0) tile+=8;
+                else tile+=40;
+            }
+            /* WaitHard(1); */
+        }
+
+        if (st) st--;
+        if (cursor_move(&c2,0,0,40,25)) {
+            if (!st) { StartSound(SND_PLAYER_FOOTSTEP); st=12; }
+        }
+        for (i=0; i<(t/4)%3; i++) LightenScreenTile(c2.x, c2.y);
+        if (tapped(SCANCODE_P)) {
+            if (tile_start<TILE_MASKED_0) c.tile = tile_start+(c2.y*40+c2.x)*8;
+            else c.tile = tile_start+(c2.y*40+c2.x)*40;
+            StartSound(SND_TULIP_INGEST);
+        }
+        if (tapped(SCANCODE_Q)) {
+            if (tile_start<25*80*4) tile_start=0; 
+            else tile_start=tile_start-25*80*4; 
+            break;
+        }
+        if (tapped(SCANCODE_W)) { 
+            /* if (tile_start>=tmax-25*80*4) tile_start=tmax-25*80*4; */
+            if (tile_start<TILE_MASKED_0) tile_start=tile_start+25*80*4; 
+            else tile_start=0;
+            break; 
+        }
+        if (tapped(SCANCODE_ESC)) {
+            /* FadeOut(); */
+            ClearScreen();
+            SelectDrawPage(activePage);
+            SelectActivePage(activePage);
+            ClearScreen();
+            mtrans = true;
+            return;
+        }
+        t++;
+    }
 }
