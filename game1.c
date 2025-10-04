@@ -100,6 +100,7 @@ Map mapData;
 
 dword lastGroupEntryLength;
 word nextActorIndex, nextDrawMode;
+word nextActorType;
 
 byte lastScancode;
 bbool isKeyDown[BYTE_MAX];

@@ -89,7 +89,7 @@ typedef void (*ActorTickFunction)(word);
 typedef void (*DrawFunction)(byte *, word, word);
 
 typedef struct {
-    word sprite, frame, x, y;
+    word sprite, type, frame, x, y;
     bool forceactive, stayactive, acrophile, weighted;
     word westfree, eastfree, data1, data2, data3, data4, data5;
     bool dead;
@@ -358,7 +358,7 @@ extern word scrollH;
 bbool cursor_move(Cursor *, word, word, word, word);
 
 /*****************************************************************************
- * actfunc.C                                                                 *
+ * actor.C                                                                   *
  *****************************************************************************/
 
 bbool NewActorAtIndex(word, word, word, word);

@@ -285,8 +285,27 @@ bbool cursor_move(Cursor *c, word xmin, word ymin, word xmax, word ymax) {
     return false;
 }
 
+void focus_actor(Cursor *c, int add) {
+    /* pick next actor */
+    do
+    if (add<0 && c->tile==0) c->tile=numActors-1;
+    else if (add>0 && c->tile==numActors-1) c->tile=0;
+    else c->tile=c->tile+add;
+    while (add!=0 && actors[c->tile].dead);
+
+    /* and focus camera on them */
+    scrollX=0;
+    if (actors[c->tile].x>=19) scrollX=actors[c->tile].x-19;
+    if (scrollX>mapWidth-38) scrollX=mapWidth-38;
+    scrollY=0;
+    if (actors[c->tile].y>=scrollH/2) scrollY=actors[c->tile].y-scrollH/2;
+    if (scrollY>maxScrollY) scrollY=maxScrollY;    
+}
+
 bbool edit_actors;
 Cursor c;
+Cursor c2;
+Cursor ca;
 word st;
 void LevelTest(void) {
     word *tile_at;
@@ -295,6 +314,12 @@ void LevelTest(void) {
     c.x = 1; c.y = 1;
     c.active = false;
     c.tile = 0;
+    c2.x=0; c2.y=0;
+    c2.active=true;
+    c2.tile=0;
+    ca.x=0; ca.y=0;
+    ca.active=false;
+    ca.tile=0;
 
     t = 0; st = 0;
     ln = 4;
@@ -352,15 +377,22 @@ void LevelTest(void) {
         if (st) st--;
 
         if (isKeyDown[SCANCODE_ESC]) break;
-        if (tapped(SCANCODE_C)) { c.active = !c.active; StartSound(SND_PLANT_MOUTH_OPEN); redraw=true; }
-        if (!c.active) {
+        if (tapped(SCANCODE_C) && !ca.active) { c.active = !c.active; StartSound(SND_PLANT_MOUTH_OPEN); redraw=true; }
+        if (tapped(SCANCODE_A) && !c.active) { ca.active = !ca.active; if (ca.active) focus_actor(&ca,0); StartSound(SND_PLANT_MOUTH_OPEN); redraw=true; }
+        if (tapped(SCANCODE_T)) {
+            TileView();
+            redraw=true; 
+        }
+
+        if (!c.active && !ca.active) {
+            /* global state */
             if (isKeyDown[scancodeNorth] && scrollY>0) { scrollY--; if (!st) { StartSound(SND_SCOOTER_PUTT); st=4; } redraw=true; }
             if (isKeyDown[scancodeSouth] && scrollY<maxScrollY) { scrollY++; if (!st) { StartSound(SND_SCOOTER_PUTT); st=4; } redraw=true; }
             if (isKeyDown[scancodeWest] && scrollX>0) { scrollX--; if (!st) { StartSound(SND_SCOOTER_PUTT); st=4; } redraw=true; }
             if (isKeyDown[scancodeEast] && scrollX<mapWidth-38) { scrollX++; if (!st) { StartSound(SND_SCOOTER_PUTT); st=4; } redraw=true; }
             if (tapped(SCANCODE_Q)) { ChangeLevel(-1); redraw=true; } 
             if (tapped(SCANCODE_W)) { ChangeLevel( 1); redraw=true; } 
-            if (tapped(SCANCODE_A)) { edit_actors = !edit_actors; redraw=true; }
+            if (tapped(SCANCODE_S)) { edit_actors = !edit_actors; redraw=true; }
             if (tapped(SCANCODE_I)) {
                 info = !info;
                 if (info) scrollH = 18;
@@ -368,23 +400,46 @@ void LevelTest(void) {
                 maxScrollY = (word)(0x10000L / (mapWidth * 2)) - scrollH;
                 redraw=true; 
             }
-            if (tapped(SCANCODE_T)) {
-                TileView();
-                redraw=true; 
-            }
-        } else {
+        } else if (c.active) {
+            /* tile edit state */
             if (cursor_move(&c,1,1,38,scrollH)) {
                 if (!st) { StartSound(SND_PLAYER_FOOTSTEP); st=12; }
-                redraw=true;
-            }
-            if (tapped(SCANCODE_O)) {
-                *tile_at = c.tile;
-                StartSound(SND_PLACE_BOMB);
                 redraw=true;
             }
             if (tapped(SCANCODE_P)) {
                 c.tile = *tile_at;
                 StartSound(SND_TULIP_INGEST);
+                redraw=true;
+            }
+            if (isKeyDown[SCANCODE_O]) {
+                *tile_at = c.tile;
+                StartSound(SND_PLACE_BOMB);
+                redraw=true;
+            }
+        } else if (ca.active) {
+            /* actor edit state */
+            if (numActors>0) {
+                if (tapped(SCANCODE_Z)) {
+                    focus_actor(&ca,-1);
+                    redraw=true;
+                }
+                if (tapped(SCANCODE_X)) {
+                    focus_actor(&ca,1);
+                    redraw=true;
+                }
+            }
+            if (tapped(SCANCODE_C)) {
+                word type=actors[ca.tile].type;
+                if (type==0) type=ACT_EP2_END_LINE;
+                else type=type-1;
+                NewActorAtIndex(ca.tile,type,actors[ca.tile].x,actors[ca.tile].y);
+                redraw=true;
+            }
+            if (tapped(SCANCODE_V)) {
+                word type=actors[ca.tile].type;
+                if (type==ACT_EP2_END_LINE) type=0;
+                else type=type+1;
+                NewActorAtIndex(ca.tile,type,actors[ca.tile].x,actors[ca.tile].y);
                 redraw=true;
             }
         }
@@ -400,23 +455,18 @@ void LevelTest(void) {
 }
 
 word tile_start = 0;
-Cursor c2;
 void TileView(void) {
     word x, y;
     word tile;
     word i;
     
-    c2.x=0; c2.y=0;
-    c2.active=true;
-    c2.tile=0;
-
     SelectDrawPage(activePage);
     SelectActivePage(activePage);
     activePage = !activePage;
     
+    ClearScreen2();
+    
     while(1) {
-        ClearScreen2();
-
         tile = tile_start;
 
         for (y = 0; y < 25; y++) {
@@ -442,15 +492,15 @@ void TileView(void) {
         if (tapped(SCANCODE_Q)) {
             if (tile_start<25*80*4) tile_start=0; 
             else tile_start=tile_start-25*80*4; 
-            break;
+            ClearScreen2();
         }
         if (tapped(SCANCODE_W)) { 
             /* if (tile_start>=tmax-25*80*4) tile_start=tmax-25*80*4; */
             if (tile_start<TILE_MASKED_0) tile_start=tile_start+25*80*4; 
             else tile_start=0;
-            break; 
+            ClearScreen2();
         }
-        if (tapped(SCANCODE_ESC)) {
+        if (tapped(SCANCODE_T) || tapped(SCANCODE_ESC)) {
             /* FadeOut(); */
             ClearScreen();
             SelectDrawPage(activePage);
@@ -459,6 +509,8 @@ void TileView(void) {
             mtrans = true;
             return;
         }
+
+        WaitHard(1);
         t++;
     }
 }

@@ -91,6 +91,7 @@ wants to influence the behavior of a subsequently called function.
 */
 extern dword lastGroupEntryLength;
 extern word nextActorIndex, nextDrawMode;
+extern word nextActorType;
 
 /*
 Keyboard and joystick variables. Also includes player immobilization and jump

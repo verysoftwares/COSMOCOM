@@ -17,6 +17,7 @@ static void ConstructActor(
     act = actors + nextActorIndex;
 
     act->sprite = sprite_type;
+    act->type = nextActorType;
     act->frame = 0;
     act->x = x_origin;
     act->y = y_origin;
@@ -3969,6 +3970,7 @@ bbool NewActorAtIndex(word index, word actor_type, word x, word y)
 {
     /* This is probably to save having to pass this 240+ times below. */
     nextActorIndex = index;
+    nextActorType = actor_type;
 
 #define F false
 #define T true
