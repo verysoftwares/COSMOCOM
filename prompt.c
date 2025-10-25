@@ -16,7 +16,7 @@ void JustPrompt(void) {
     /* diag 2: 
        Google declares the slogan 
     */
-    if (now == 1) { 
+    if (now == 2) { 
         x = UnfoldTextFrame(1, 11, 28, "COSMIC HINT!", "Press any key to exit.");
         DrawTextLine(x+3-2, 8+1, "Press SPACE to hurry or");
         DrawTextLine(x, 4, "\xFC""003 Google declares the");
@@ -40,7 +40,7 @@ void JustPrompt(void) {
     }
 
     /* diag 3 after the pounceHintWhatever */
-    if (now == 2) {
+    if (now == 3) {
         x = UnfoldTextFrame(1, scrollH-2+1+6+1, 38, "COSMIC HINT!", " Press any key to exit.");
         DrawTextLine(x+6+1, scrollH-4+1+6+1, "Press SPACE to hurry or");
         DrawTextLine(x, 4, "\xFC""003 In this way, you start experiencing");
@@ -66,21 +66,94 @@ void JustPrompt(void) {
     }
 
     /* diag 4:
-       "I'm gonna make a song that lasts 109090901.3 years!"
+       "I'm gonna make a song that lasts 109090901.3 years!!!!!!!!!!!"
         My dude, there was never any doubt about that.
     */
+    if (now == 4) {
+        x = UnfoldTextFrame(1, 11, 28, "COSMIC HINT!", "Press any key to exit.");
+        DrawTextLine(x+3-2, 8+1, "Press SPACE to hurry or");
+        DrawTextLine(x-1, 4, "\xFC""003 I'm gonna make a song that");
+        DrawTextLine(x, 5, "\xFC""003 lasts 109090901.3 years!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        WaitSpinner(x + 28-2-1, 9+1);
+        DrawTextLine(0, 6, "\xFC""003 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        WaitSpinner(x + 28-2-1, 9+1);
+        x = UnfoldTextFrame(1, 11, 28, "COSMIC HINT!", "Press any key to exit.");
+        DrawTextLine(x+3-2, 8+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 My dude, there was never");
+        DrawTextLine(x, 5, "\xFC""003 any doubt about that!");
+        WaitSpinner(x + 28-2-1, 9+1);
+        now++;
+        return;
+    }
 
     /* diag 5:
        Terence McKenna
     */
+    if (now == 5) {
+        x = UnfoldTextFrame(1, scrollH-2+1+6+1, 38, "COSMIC HINT!", " Press any key to exit.");
+        DrawTextLine(x+6+1, scrollH-4+1+6+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 I'd say Terence McKenna stands as");
+        DrawTextLine(x, 5, "\xFC""003 an example of such a role model. He");
+        DrawTextLine(x, 6, "\xFC""003 is one type of genius, but not the");
+        DrawTextLine(x, 7, "\xFC""003 same type as Einstein, as Terence");
+        DrawTextLine(x, 8, "\xFC""003 didn't come up with another huge");
+        DrawTextLine(x, 9, "\xFC""003 innovation, he was more untangling");
+        DrawTextLine(x, 10, "\xFC""003 the traps previous innovations had");
+        DrawTextLine(x, 11, "\xFC""003 lead to.");
+        WaitSpinner(x + 38-2-1, scrollH-2-1+6+1+1);
+        x = UnfoldTextFrame(1, 11+1, 28, "COSMIC HINT!", "Press any key to exit.");
+        DrawTextLine(x+3-2, 8+1+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 He was frighteningly good");
+        DrawTextLine(x, 5, "\xFC""003 at this, and his legacy");
+        DrawTextLine(x, 6, "\xFC""003 shall live on in Youtube");
+        DrawTextLine(x, 7, "\xFC""003 clips with really dist");
+        DrawTextLine(x, 8, "\xFC""003 racting background music.");
+        WaitSpinner(x + 28-2-1, 9+1+1);
+        now++;
+        return;
+    }
 
     /* diag 6:
        classical 2007 era Youtube Poops
     */
+    if (now == 6) {
+        x = UnfoldTextFrame(1, scrollH-2+1+6+1, 38, "COSMIC HINT!", " Press any key to exit.");
+        DrawTextLine(x+6+1, scrollH-4+1+6+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 I'm boutta expound my knowledge of");
+        DrawTextLine(x, 5, "\xFC""003 the, classical 2007 era Youtube");
+        DrawTextLine(x, 6, "\xFC""003 Poops.");
+        WaitSpinner(x + 38-2-1, scrollH-2-1+6+1+1);
+        x = UnfoldTextFrame(1, 11, 28, "COSMIC HINT!", "Press any key to exit.");
+        DrawTextLine(x+3-2, 8+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 Heavily implying that I");
+        DrawTextLine(x, 5, "\xFC""003 know more than one cate");
+        DrawTextLine(x, 6, "\xFC""003 gory.");
+        WaitSpinner(x + 28-2-1, 9+1);
+        x = UnfoldTextFrame(1, scrollH-2+1+6+1, 38, "COSMIC HINT!", " Press any key to exit.");
+        DrawTextLine(x+6+1, scrollH-4+1+6+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 With no upper limit on how many I");
+        DrawTextLine(x, 5, "\xFC""003 know either. Perhaps we need not");
+        DrawTextLine(x, 6, "\xFC""003 only look into the future from");
+        DrawTextLine(x, 7, "\xFC""003 2007, there may be a class of,");
+        DrawTextLine(x, 8, "\xFC""003 \"\"\"prehistoric\"\"\" Youtube Poops as");
+        DrawTextLine(x, 9, "\xFC""003 well.");
+        WaitSpinner(x + 38-2-1, scrollH-2-1+6+1+1);
+        now++;
+        return;
+    }
 
     /* diag 7:
        My dude, this peace is what all true warriors strive for.
     */
+    if (now == 7) {
+        x = UnfoldTextFrame(1, 11, 28, "COSMIC HINT!", "Press any key to exit.");
+        DrawTextLine(x+3-2, 8+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 My dude, this peace is what");
+        DrawTextLine(x, 5, "\xFC""003 all true warriors strive for.");
+        WaitSpinner(x + 28-2-1, 9+1);
+        now++;
+        return;
+    }
 
     /* diag 8:
        I'm not afraid of you.
