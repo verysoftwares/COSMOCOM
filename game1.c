@@ -130,6 +130,8 @@ word numBarrels, numEyePlants, pounceStreak;
 word mysteryWallTime;
 word activeTransporter, transporterTimeLeft;
 
+bbool emexit = false;
+
 /*
 Random number generator for world events.
 

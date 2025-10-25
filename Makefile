@@ -37,7 +37,7 @@ MODEL=l
 LIBMODEL=L
 LONGMODEL=LARGE
 
-OBJS=c0$(MODEL).obj main.obj game1.obj ctrlflow.obj groupf.obj input.obj player.obj actor.obj game2.obj game3.obj
+OBJS=c0$(MODEL).obj main.obj game1.obj ctrlflow.obj groupf.obj input.obj player.obj prompt.obj actor.obj game2.obj game3.obj
 OUTEXE=cosmore$(EPISODE).exe
 
 all: $(OUTEXE)

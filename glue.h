@@ -412,6 +412,12 @@ void LoadDemoData(void);
 void SaveDemoData(void);
 Music *LoadMusicData(word, Music *);
 
+/*****************************************************************************
+ * prompt.C                                                                  *
+ *****************************************************************************/
+
+void JustPrompt(void);
+
 /* maybe UI.C, miscobjs.C, audio.C, world.C */
 
 #endif  /* GLUE_H */

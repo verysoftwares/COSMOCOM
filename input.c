@@ -128,7 +128,7 @@ void interrupt KeyboardInterruptService(void)
     }
 
     /* emergency exit for hardlocks */
-    if (isKeyDown[SCANCODE_F12]) {
+    if (emexit && isKeyDown[SCANCODE_F12]) {
         StartSound(SND_BOSS_DAMAGE);
         ExitClean();
         return;

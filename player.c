@@ -742,6 +742,10 @@ bbool ProcessAndDrawPlayer(void)
             }
         }
 
+        if (playerHurtCooldown == 22 && pounceHintState != POUNCE_HINT_UNSEEN) {
+            JustPrompt();
+        }
+
     } else if (playerDeadTime < 10) {
         if (playerDeadTime == 1) {
             StartSound(SND_PLAYER_HURT);

@@ -1014,6 +1014,7 @@ height. Arguments work the same as DrawTextFrame(), except `left` is determined
 automatically (to center the frame horizontally) and `centered` is forced true.
 Returns the X coordinate of the inside-left edge of the frame.
 */
+/* lmao it has top text and bottom text just like my memes */
 word UnfoldTextFrame(
     int top, int height, int width, char *top_text, char *bottom_text
 ) {
@@ -3567,8 +3568,10 @@ void ShowPounceHint(void)
     SelectDrawPage(activePage);
     StartSound(SND_HINT_DIALOG_ALERT);
 
-    x = UnfoldTextFrame(2, 5, 22, "REMINDER:  Jump on", "defend yourself.  ");
-    DrawTextLine(x, 4, " top of creatures to");
+    /* x = UnfoldTextFrame(2, 5, 22, "REMINDER:  Jump on", "defend yourself.  ");
+    DrawTextLine(x, 4, " top of creatures to"); */
+    x = UnfoldTextFrame(2, 5, 22, "REMINDER:", "in the balls.");
+    DrawTextLine(x, 4, "Pee is stored");
     WaitHard(60);
     WaitSpinner(x + 19, 5);
 

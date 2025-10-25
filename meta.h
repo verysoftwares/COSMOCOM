@@ -198,4 +198,6 @@ extern bbool isPlayerInvincible;
 extern word playerHurtCooldown, playerDeadTime;
 extern byte playerFallDeadTime;
 
+extern bbool emexit; /* whether you can F12 out */
+
 #endif /* #ifndef META_H */
