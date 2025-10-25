@@ -199,5 +199,6 @@ extern word playerHurtCooldown, playerDeadTime;
 extern byte playerFallDeadTime;
 
 extern bbool emexit; /* whether you can F12 out */
+extern word now; /* how manieth dialogue */
 
 #endif /* #ifndef META_H */

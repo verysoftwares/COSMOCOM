@@ -131,6 +131,7 @@ word mysteryWallTime;
 word activeTransporter, transporterTimeLeft;
 
 bbool emexit = false;
+word now = 1;
 
 /*
 Random number generator for world events.
