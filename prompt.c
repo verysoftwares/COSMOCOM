@@ -4,7 +4,7 @@
 #include "glue.h"
 
 /* nää on että missä dialogissa ollaan */
-word now = 8;
+word now = 2;
 bbool now0 = false;
 
 /* diag 0: 
@@ -236,8 +236,8 @@ void JustPrompt(void) {
 
         x = UnfoldTextFrame(1, 11, 28, "COSMIC HINT!", "Press any key to exit.");
         DrawTextLine(x+3-2, 8+1, "Press SPACE to hurry or");
-        DrawTextLine(x, 4, "\xFC""003 Considering this you end up");
-        DrawTextLine(x, 5, "\xFC""003 closing the tab.");
+        DrawTextLine(x, 4, "\xFC""003 Considering this you end");
+        DrawTextLine(x, 5, "\xFC""003 up closing the tab.");
         WaitSpinner(x + 28-2-1, 9+1);
 
         now++;
