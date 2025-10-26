@@ -417,6 +417,7 @@ Music *LoadMusicData(word, Music *);
  *****************************************************************************/
 
 void JustPrompt(void);
+void void2(void);
 
 /* maybe UI.C, miscobjs.C, audio.C, world.C */
 

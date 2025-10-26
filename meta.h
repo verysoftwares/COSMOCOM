@@ -200,5 +200,6 @@ extern byte playerFallDeadTime;
 
 extern bbool emexit; /* whether you can F12 out */
 extern word now; /* how manieth dialogue */
+extern bbool now0; /* whether 0th seen */
 
 #endif /* #ifndef META_H */
