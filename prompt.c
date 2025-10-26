@@ -242,7 +242,10 @@ void JustPrompt(void) {
 
         now++;
         printf("The story is not an End yet!\nThe japanese Heart is not satisfied!\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.");  /* 22 of these */
-        exit(EXIT_SUCCESS);
+        /* tää feilas kaatumisen siten että merely hardlocked */
+        /* exit(EXIT_SUCCESS); */
+        /* yritetään uudestaan. */
+        ExitClean();
     }
 
     /* diag 10:
