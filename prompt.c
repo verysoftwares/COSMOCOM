@@ -39,6 +39,9 @@ void JustPrompt(void) {
     EGA_MODE_LATCHED_WRITE();
     SelectDrawPage(activePage);
 
+    /* counting begins at 2 now to create a synthesis of */
+    /* both C and Lua styles. */
+    /* i will admit i didn't intend this to be the intention but i just f9cced up something and rolled with it anyway */
     /* diag 2: 
        Google declares the slogan 
     */
