@@ -10,7 +10,10 @@ bbool now0 = false;
 /* diag 0: 
    So by taking damage here, you'll 
    peel layers off Cosmo's psyche.
-*/
+ */
+/* diag 0+:
+   TODO: Write Instructions
+ */
 /* mut mihinkä kohtaan koodia sää upotat tämmösen promptin ja pittäähän se muutenki ensin kirjottaa */
 /* also try these on for size size size */
 /* tulee 1 virhe: */
@@ -41,7 +44,7 @@ void JustPrompt(void) {
 
     /* counting begins at 2 now to create a synthesis of */
     /* both C and Lua styles. */
-    /* i will admit i didn't intend this to be the intention but i just f9cced up something and rolled with it anyway */
+    /* i will admit i didn't intend this to be the i+ntention but i just f9cced up something and rolled with it anyway */
     /* diag 2: 
        Google declares the slogan 
     */
@@ -89,7 +92,7 @@ void JustPrompt(void) {
         DrawTextLine(x, 18, "\xFC""003 as you begin to introduce multiple");
         DrawTextLine(x, 19, "\xFC""003 perspectives, but my dude just take");
         DrawTextLine(x, 20, "\xFC""003 care of yourself first.");
-        WaitSpinner(x + 38-2-1, scrollH-2-1+6+1+1);
+        WaitSpinner(x + 38-2-1, scrollH-2-1+6+1+1);+
         now++;
         return;
     }

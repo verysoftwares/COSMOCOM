@@ -7,6 +7,7 @@ input.obj+
 player.obj+
 prompt.obj+
 actor.obj+
+event.obj+
 game2.obj+
 game3.obj
 cosmore2.exe

@@ -4,7 +4,7 @@ A narrative-oriented mod project building on Apogee Software's 1992 DOS platform
 
 ## Design
 
-Thematically, this mod explores the evolution of personal computing from the DOS era to 2025, with a branching plot told through silly characters and their questlines. Given that I'm starting with a full game and all its assets to leverage, there are quite a few new mechanics I can bring to the table. No spoilers yet, but you can expect a late November release.
+Thematically, this mod explores the evolution of personal computing from the DOS era to 2025, with a branching plot told through silly characters and their questlines. Given that I'm starting with a full game and all its assets to leverage, there are quite a few new mechanics I can bring to the table. No spoilers yet, but it's now December and Level 1 is playable at the [verysoftwares](https://verysoftwares.itch.io/cosmos-computer-adventure) itch page.
 
 ## Implementation
 

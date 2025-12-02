@@ -291,7 +291,7 @@ static void SetAdLibRegister(byte addr, byte data)
     asm popf
 
     asm mov   dx,0x0388
-    asm in    al,dx  /* 35 `in` instructions for a 23.5 us delay */
+    asm in    al,dx  /* 35 `in` instructions for a 23.5 µs delay */
     asm in    al,dx
     asm in    al,dx
     asm in    al,dx
@@ -302,7 +302,7 @@ static void SetAdLibRegister(byte addr, byte data)
     asm in    al,dx
     asm in    al,dx
     asm in    al,dx
-    asm in    al,dx
+/* å+ */    asm in    al,dx
     asm in    al,dx
     asm in    al,dx
     asm in    al,dx

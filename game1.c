@@ -1866,7 +1866,7 @@ by coreleft() here.
 
 The memory test in this function checks for the *additional* amount that will be
 dynamically allocated during Startup(). There will be up to fifteen total calls
-to malloc(), requesting a maximum total of 389,883 bytes of memory. Each
++to malloc(), requesting a maximum total of 389,883 bytes of memory. Each
 separate call for `malloc(bytes)` really subtracts `((bytes + 0x17) >> 4) << 4`
 from what's reported by coreleft(), so the final amount ends up being 390,080.
 
