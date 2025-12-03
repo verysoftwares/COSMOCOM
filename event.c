@@ -73,16 +73,16 @@ static EventFunc fetch_event_cache(EventFunc* ecat, word aid) {
     return cure;
 }
 
-static EventFunc fetch_event(word _ecat, word aid) {
+/*static EventFunc fetch_event(word _ecat, word aid) {
     EventFunc* ecat = fetch_ecat(_ecat);
     if (ecat == NULL) { mid_box("Event MISSINGNO. request","","",""); return testevent; }
 
     return fetch_event_cache(ecat, aid);
-}
+}*/
 
-static void registevt(EventFunc* ecat, word aid, EventFunc cure) {
+/*static void registevt(EventFunc* ecat, word aid, EventFunc cure) {
     ecat[aid] = cure;
-}
+}*/
 
 static void assign(word _ecat, word aid, EventFunc newe) {
     EventFunc* ecat = fetch_ecat(_ecat);
@@ -114,8 +114,7 @@ void launch(word _ecat, word aid/*, word _eid*/) {
      * nonetheless, the common calls can be encapsulated.
      */
 
-    /* registevt(ecat,aid,cure); */
-    cure();
+    /* >>>> */ cure(); /* <<<< */
 
     /* alright, our job here is done.
      *

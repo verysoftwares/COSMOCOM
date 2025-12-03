@@ -103,7 +103,7 @@ bool TryPounce(int recoil)
     return false;
 }
 
-word hurt_act;
+word hurt_act = 9999;
 /*
 Cause the player pain, deduct health, and determine if the player becomes dead.
 */
@@ -756,7 +756,7 @@ bbool ProcessAndDrawPlayer(void)
             if (levelNum == 0) {
                 JustPrompt();
             } else {
-                launch(0,0);
+                if (hurt_act<999) launch(0,0);
             }
         }
 
@@ -784,6 +784,7 @@ bbool ProcessAndDrawPlayer(void)
         if (playerDeadTime > 36) {
             LoadGameState('T');
             InitializeLevel(levelNum);
+            hurt_act = 9999;
             return true;
         }
     }
