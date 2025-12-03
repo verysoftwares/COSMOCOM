@@ -909,7 +909,7 @@ static void ActTwoTonsCrusher(word index)
     }
 
     if (IsTouchingPlayer(SPR_TWO_TONS_CRUSHER, 4, act->x - 1, act->y + 3)) {
-        HurtPlayer();
+        HurtPlayer(index);
     }
 
     DrawSprite(SPR_TWO_TONS_CRUSHER, 4, act->x - 1, act->y + 3, DRAW_MODE_NORMAL);
@@ -1672,7 +1672,7 @@ static void ActBeamRobot(word index)
 
     DrawSprite(SPR_BEAM_ROBOT, act->data5, act->x, act->y, DRAW_MODE_NORMAL);
     if (IsTouchingPlayer(SPR_BEAM_ROBOT, 0, act->x, act->y)) {
-        HurtPlayer();
+        HurtPlayer(index);
     }
 
     beamframe++;
@@ -1683,7 +1683,7 @@ static void ActBeamRobot(word index)
         DrawSprite(SPR_BEAM_ROBOT, (beamframe % 4) + 4, act->x + 1, act->y - i, DRAW_MODE_NORMAL);
 
         if (IsTouchingPlayer(SPR_BEAM_ROBOT, 4, act->x + 1, act->y - i)) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
     }
     /* value left in i is used below! */
@@ -1691,7 +1691,7 @@ static void ActBeamRobot(word index)
     DrawSprite(SPR_BEAM_ROBOT, act->data5 + 2, act->x + 1, (act->y - i) + 1, DRAW_MODE_NORMAL);
 
     if (IsTouchingPlayer(SPR_BEAM_ROBOT, 0, act->x, act->y + 1)) {
-        HurtPlayer();
+        HurtPlayer(index);
     }
 
     if (IsNearExplosion(act->sprite, act->frame, act->x, act->y)) {
@@ -2715,7 +2715,7 @@ static void ActForceField(word index)
     if (act->data5 == 0) {
         for (;; act->data1++) {
             if (IsTouchingPlayer(act->sprite, 0, act->x, act->y - act->data1)) {
-                HurtPlayer();
+                HurtPlayer(index);
                 break;
             }
 
@@ -2727,7 +2727,7 @@ static void ActForceField(word index)
     } else {
         for (;; act->data1++) {
             if (IsTouchingPlayer(act->sprite, 0, act->x + act->data1, act->y)) {
-                HurtPlayer();
+                HurtPlayer(index);
                 break;
             }
 
@@ -3578,7 +3578,7 @@ static void ActRocket(word index)
             act->data4 = !act->data4;
             DrawSprite(SPR_ROCKET, act->data4 + 4, act->x, act->y + 6, DRAW_MODE_NORMAL);
             if (IsTouchingPlayer(SPR_ROCKET, 4, act->x, act->y + 6)) {
-                HurtPlayer();
+                HurtPlayer(index);
             }
 
             if (act->data4 != 0) {

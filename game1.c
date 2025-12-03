@@ -1110,7 +1110,7 @@ void DrawFountains(void)
             DrawSprite(SPR_FOUNTAIN, (slowcount % 2) + 2, fnt->x + 1, fnt->y + y + 1, DRAW_MODE_NORMAL);
 
             if (IsTouchingPlayer(SPR_FOUNTAIN, 2, fnt->x + 1, fnt->y + y + 1)) {
-                HurtPlayer();
+                HurtPlayer2();
             }
         }
     }
@@ -1405,7 +1405,7 @@ void DrawExplosions(void)
         DrawSprite(SPR_EXPLOSION, (ex->age - 1) % 4, ex->x, ex->y, DRAW_MODE_NORMAL);
 
         if (IsTouchingPlayer(SPR_EXPLOSION, (ex->age - 1) % 4, ex->x, ex->y)) {
-            HurtPlayer();
+            HurtPlayer2();
         }
 
         ex->age++;

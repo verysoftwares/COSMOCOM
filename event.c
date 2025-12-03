@@ -8,6 +8,11 @@
 void testevent(void) {
     mid_box("wrong event my dude(s)!","","","");
 }
+void testhurt(void) {
+    char sp[40];
+    sprintf(sp,"%s%d%s","Hurt by actor #",hurt_act,"!");
+    mid_box(sp,"","","");
+}
 
 typedef void (*EventFunc)(void);
 
@@ -17,10 +22,10 @@ typedef void (*EventFunc)(void);
  * well, the bottom line is i can still redirect an event
  * by just assigning a new function pointer to the slot.
  */ 
-/* word* */  EventFunc hurt_evs[256];
-/* word* */  EventFunc pick_evs[256];
-/* word* */  EventFunc jump_evs[256];
-/* word* */  EventFunc bomb_evs[256];
+/* word* */  EventFunc hurt_evs[256]; /* _ecat=0 */
+/* word* */  EventFunc pick_evs[256]; /* _ecat=1 */
+/* word* */  EventFunc jump_evs[256]; /* _ecat=2 */
+/* word* */  EventFunc bomb_evs[256]; /* _ecat=3 */
 /* word** */ EventFunc* gen_evs[4] = {hurt_evs,
                                       pick_evs,
                                       jump_evs,
@@ -109,7 +114,8 @@ void launch(word _ecat, word aid/*, word _eid*/) {
      * nonetheless, the common calls can be encapsulated.
      */
 
-    registevt(ecat,aid,cure);
+    /* registevt(ecat,aid,cure); */
+    cure();
 
     /* alright, our job here is done.
      *
@@ -127,6 +133,7 @@ void init_lv_events(word ln) {
     word i,j;
     for (j=0; j<4; j++) { for (i=0; i<256; i++) {
         gen_evs[j][i] = testevent;
+        if (j==0) gen_evs[j][i] = testhurt;
     }}
 
     switch (ln) {

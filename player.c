@@ -103,10 +103,14 @@ bool TryPounce(int recoil)
     return false;
 }
 
+word hurt_act;
 /*
 Cause the player pain, deduct health, and determine if the player becomes dead.
 */
-void HurtPlayer(void)
+/*
+doesn't set hurt_act like HurtPlayer does
+*/
+void HurtPlayer2()
 {
     if (
         playerDeadTime != 0 || isGodMode || blockActionCmds || activeTransporter != 0 ||
@@ -135,6 +139,12 @@ void HurtPlayer(void)
         playerHurtCooldown = 44;
         StartSound(SND_PLAYER_HURT);
     }
+}
+
+void HurtPlayer(word _hurt_act)
+{
+    HurtPlayer2();
+    hurt_act = _hurt_act;
 }
 
 /*
@@ -1483,7 +1493,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
                 return true;
             }
         } else if (act->hurtcooldown == 0 && IsTouchingPlayer(sprite_type, frame, x, y)) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1514,7 +1524,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
                 return true;
             }
         } else if (act->hurtcooldown == 0 && IsTouchingPlayer(sprite_type, frame, x, y)) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1528,7 +1538,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
             AddScoreForSprite(act->sprite);
             return true;
         } else if (IsTouchingPlayer(sprite_type, frame, x, y)) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1576,7 +1586,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
         }
         /* Can't maintain parity with the original using an `else if` here. */
         if (act->hurtcooldown == 0 && IsTouchingPlayer(sprite_type, frame, x, y)) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1593,7 +1603,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
             }
             nextDrawMode = DRAW_MODE_WHITE;
         } else if (act->hurtcooldown == 0 && IsTouchingPlayer(sprite_type, frame, x, y)) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1614,7 +1624,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
                 return true;
             }
         } else if (act->hurtcooldown == 0 && IsTouchingPlayer(sprite_type, frame, x, y)) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1642,7 +1652,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
                 act->frame = 8;
             }
         } else if (act->hurtcooldown == 0 && IsTouchingPlayer(sprite_type, frame, x, y)) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1653,7 +1663,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
             StartSound(SND_PLAYER_POUNCE);
             act->hurtcooldown = 5;
         } else if (act->hurtcooldown == 0 && IsTouchingPlayer(sprite_type, frame, x, y)) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1733,7 +1743,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
                 NewDecoration(SPR_SMOKE, 6, act->x,     act->y, DIR8_NORTHWEST, 1);
                 NewDecoration(SPR_SMOKE, 6, act->x + 3, act->y, DIR8_NORTHEAST, 1);
             } else if (act->hurtcooldown == 0 && IsTouchingPlayer(sprite_type, frame, x, y)) {
-                HurtPlayer();
+                HurtPlayer(index);
             }
         }
         return true;
@@ -1771,7 +1781,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_6:  /* probably for ACT_FIREBALL_E; never happens */
     case SPR_48:  /* " " " ACT_PYRAMID_CEIL " " " */
     case SPR_50:  /* " " " ACT_PYRAMID_FLOOR " " " */
-        HurtPlayer();
+        HurtPlayer(index);
         if (act->sprite == SPR_PROJECTILE) {
             act->dead = true;
         }
@@ -1780,7 +1790,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_FLAME_PULSE_W:
     case SPR_FLAME_PULSE_E:
         if (act->frame > 1) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1790,21 +1800,21 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
             act->y = act->data2;
             act->data4 = 0;
             if (act->y > playerY - 4 || act->frame == 6) {
-                HurtPlayer();
+                HurtPlayer(index);
             }
             act->frame = 0;
             return false;
         }
         /* Can't maintain parity with the original using an `else if` here. */
         if (act->y > playerY - 4) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
     case SPR_CLAM_PLANT:
     case SPR_84:  /* probably for ACT_CLAM_PLANT_CEIL; never happens */
         if (act->frame != 0) {
-            HurtPlayer();
+            HurtPlayer(index);
         }
         return false;
 
@@ -1824,7 +1834,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_SPIKES_E_RECIP:
     case SPR_SPIKES_W:
         if (act->frame > 1) return true;
-        HurtPlayer();
+        HurtPlayer(index);
         return false;
 
     case SPR_POWER_UP:
@@ -1911,7 +1921,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
 
     case SPR_HEART_PLANT:
         act->data1 = 1;
-        HurtPlayer();
+        HurtPlayer(index);
         return false;
 
     case SPR_BOMB_IDLE:
@@ -2033,7 +2043,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_SPIT_WALL_PLANT_W:
     case SPR_PINK_WORM_SLIME:
     case SPR_THRUSTER_JET:
-        HurtPlayer();
+        HurtPlayer(index);
         return false;
 
     case SPR_SCOOTER:

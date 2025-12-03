@@ -202,4 +202,9 @@ extern bbool emexit; /* whether you can F12 out */
 extern word now; /* how manieth dialogue */
 extern bbool now0; /* whether 0th seen */
 
+/*
+event.c
+*/
+extern word hurt_act;
+
 #endif /* #ifndef META_H */
