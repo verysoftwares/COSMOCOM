@@ -259,3 +259,38 @@ void JustPrompt(void) {
        oho tää meni jotenki jo
     */
 }
+
+void mid_box(char* _line1, char* _line2, char* _line3, char* _line4) {
+    int x;
+
+    char line1[40]; char line2[40]; 
+    char line3[40]; char line4[40]; 
+    
+    EGA_MODE_LATCHED_WRITE();
+    SelectDrawPage(activePage);
+
+    /* textbox frame is drawn regardless. */
+    x = UnfoldTextFrame(1, 11, 28, "COSMIC HINT!", "Press any key to exit.");
+    DrawTextLine(x+3-2, 8+1, "Press SPACE to hurry or");
+
+    /* beyond that, only non-empty strings are drawn. */
+    if (_line1[0] != '\0') {
+        sprintf(line1, "%s%s%s","\xFC","003 ",_line1);
+        DrawTextLine(x, 4, line1);
+    }
+    if (_line2[0] != '\0') {
+        sprintf(line2, "%s%s%s","\xFC","003 ",_line2);
+        DrawTextLine(x, 5, line2);
+    }
+    if (_line3[0] != '\0') {
+        sprintf(line3, "%s%s%s","\xFC","003 ",_line3);
+        DrawTextLine(x, 6, line3);
+    }
+    if (_line4[0] != '\0') {
+        sprintf(line4, "%s%s%s","\xFC","003 ",_line4);
+        DrawTextLine(x, 7, line4);
+    }
+
+    /* and wait for player input as well. */
+    WaitSpinner(x + 28-2-1, 9+1);
+}

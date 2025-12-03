@@ -418,6 +418,14 @@ Music *LoadMusicData(word, Music *);
 
 void JustPrompt(void);
 void void2(void);
+void mid_box(char*, char*, char*, char*);
+
+/*****************************************************************************
+ * event.C                                                                   *
+ *****************************************************************************/
+
+void init_lv_events(word);
+void launch(word, word);
 
 /* maybe UI.C, miscobjs.C, audio.C, world.C */
 

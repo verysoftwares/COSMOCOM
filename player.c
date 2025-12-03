@@ -743,7 +743,11 @@ bbool ProcessAndDrawPlayer(void)
         }
 
         if (playerHurtCooldown == 22 && pounceHintState != POUNCE_HINT_UNSEEN) {
-            JustPrompt();
+            if (levelNum == 0) {
+                JustPrompt();
+            } else {
+                launch(0,0);
+            }
         }
 
     } else if (playerDeadTime < 10) {

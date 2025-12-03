@@ -2663,6 +2663,8 @@ void InitializeLevel(word level_num)
 
     if (!level_edit) FadeIn();
 
+    init_lv_events(levelNum);
+
 #ifdef EXPLOSION_PALETTE
     if (paletteAnimationNum == PAL_ANIM_EXPLOSIONS) {
         SetPaletteRegister(PALETTE_KEY_INDEX, MODE1_BLACK);
@@ -2679,7 +2681,7 @@ void InitializeEpisode(void)
     gameScore = 0;
     playerHealth = 4;
     playerHealthCells = 3;
-    levelNum = 0;
+    levelNum = /*0*/9;
     playerBombs = 0;
     gameStars = 0;
     demoDataPos = 0;

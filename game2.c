@@ -3590,7 +3590,8 @@ NOTE: It is not safe to call this function with level_num > 17.
 */
 void ShowLevelIntro(word level_num)
 {
-    byte mapnums[] = {1, 2, 0, 0, 3, 4, 0, 0, 5, 6, 0, 0, 7, 8, 0, 0, 9, 10};
+    /*               {1, 2, 0, 0, 3, 4, 0, 0, 5, 6, 0, 0, 7, 8, 0, 0, 9, 10};*/
+    byte mapnums[] = {1, 2, 0, 0, 3, 4, 0, 0, 5, 2, 0, 0, 7, 8, 0, 0, 9, 10};
     word x;
 
     /* This never occurs */
