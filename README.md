@@ -1,6 +1,6 @@
 # Cosmo's Computer Adventure
 
-A narrative-oriented mod project building on [Apogee Software Productions](https://apogeeent.com)' 1992 DOS platformer, Cosmo's Cosmic Adventure. It's meant to be an "Episode 4" for the original game, where - years after his original adventures - Cosmo somehow gets sucked into a computer and has to escape this predicament.
+A narrative-oriented mod project building on [Apogee Software Productions](https://apogeeent.com)' 1992 DOS platformer, [Cosmo's Cosmic Adventure](https://www.gog.com/en/game/cosmos_cosmic_adventure). It's meant to be an "Episode 4" for the original game, where - years after his original adventures - Cosmo somehow gets sucked into a computer and has to escape this predicament.
 
 ## Design
 
