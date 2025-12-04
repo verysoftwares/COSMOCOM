@@ -295,5 +295,5 @@ void mid_box(char* _line1, char* _line2, char* _line3, char* _line4) {
     /* and wait for player input as well. */
         WaitSpinner(x + 28-2-1, 9+1);
 
-    pick_act = 9999;
+    /*pick_act = 9999;*/
 }

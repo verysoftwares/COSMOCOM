@@ -1421,7 +1421,14 @@ infront:
 
 word playerPickupCooldown = 0;
 static void pick_event(word index) {
-    if ( (playerHurtCooldown == 0) && (playerPickupCooldown == 0) && (pick_act >= 999) ) { playerPickupCooldown = 10; pick_act = index; launch(1,index); }
+    if ( (playerHurtCooldown == 0) 
+    && (playerPickupCooldown == 0) 
+    && (pick_act >= 999) ) { 
+
+        playerPickupCooldown = 16; 
+        pick_act = index; 
+        launch(1,index); 
+    }
 }
 /*
 Handle interactions between the player and the passed actor.
