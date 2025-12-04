@@ -49,8 +49,8 @@ static void GameLoop(byte demo_state)
             DrawSprite(SPR_DEMO_OVERLAY, 0, 18, 4, DRAW_MODE_ABSOLUTE);
         }
 
-#ifdef DEBUG_BAR
-#define BSTR(value) ((value) ? "T" : "F")
+        if (0) {
+        #define BSTR(value) ((value) ? "T" : "F")
         {
             char debugBar[41];
             word x, y, southmove;
@@ -107,8 +107,9 @@ static void GameLoop(byte demo_state)
             EGA_MODE_LATCHED_WRITE();
             DrawSolidTile(TILE_WAIT_SPINNER_1 + spinoff, 39 + (0 * 320));
         }
-#undef BSTR
-#endif  /* DEBUG_BAR */
+        /*#undef BSTR*/
+        /*#endif*/  /* DEBUG_BAR */
+        }
 
         SelectDrawPage(activePage);
         activePage = !activePage;

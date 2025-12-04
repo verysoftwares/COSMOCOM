@@ -48,7 +48,7 @@ void DrawNumber(dword value, word x_origin, word y_origin)
     char text[16];
     int x, length;
 
-    if (level_edit && (y_origin==0 || y_origin>scrollH)) return;
+    if (1/*level_edit*/ && (y_origin==0 || y_origin>scrollH)) return;
 
     EGA_MODE_DEFAULT();
 
@@ -56,7 +56,7 @@ void DrawNumber(dword value, word x_origin, word y_origin)
     length = strlen(text);
 
     for (x = 0; x < length; x++) {
-        if (level_edit && ((x_origin + x)==0 || (x_origin + x)>=39)) continue;
+        if (1/*level_edit*/ && ((x_origin + x)==0 || (x_origin + x)>=39)) continue;
         DrawSpriteTile(
             fontTileData + FONT_0 + ((text[x] - '0') * 40), x_origin + x, y_origin
         );

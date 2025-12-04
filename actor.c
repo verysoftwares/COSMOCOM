@@ -123,7 +123,7 @@ static void ProcessActor(word index)
 
     if (nextDrawMode != DRAW_MODE_HIDDEN) {
         DrawSprite(act->sprite, act->frame, act->x, act->y, nextDrawMode);
-        if (level_edit) {
+        if (1/*level_edit*/) {
             DrawNumber(index, act->x-scrollX+1, act->y-scrollY+2);
         }
     }

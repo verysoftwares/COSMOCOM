@@ -29,7 +29,7 @@
 #define GLUE_H
 
 /* Replace the in-game status bar with a snapshot of some global variables */
-#define DEBUG_BAR
+/*#define DEBUG_BAR*/
 
 /*
 Enable this to prevent falling out of the map with god mode enabled. When

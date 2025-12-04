@@ -143,8 +143,8 @@ void HurtPlayer2()
 
 void HurtPlayer(word _hurt_act)
 {
+    if (playerHurtCooldown == 0) hurt_act = _hurt_act;
     HurtPlayer2();
-    hurt_act = _hurt_act;
 }
 
 /*
