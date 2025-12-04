@@ -141,6 +141,11 @@ void MoveAndDrawActors(void)
 
     isPlayerNearHintGlobe = false;
 
+    if (playerPickupCooldown>0) {
+        playerPickupCooldown--;
+        if (playerPickupCooldown == 0) pick_act = 9999;
+    }
+
     for (i = 0; i < numActors; i++) {
         ProcessActor(i);
     }

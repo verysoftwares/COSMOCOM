@@ -207,5 +207,6 @@ event.c
 */
 extern word hurt_act;
 extern word pick_act;
+extern word playerPickupCooldown;
 
 #endif /* #ifndef META_H */
