@@ -206,5 +206,6 @@ extern bbool now0; /* whether 0th seen */
 event.c
 */
 extern word hurt_act;
+extern word pick_act;
 
 #endif /* #ifndef META_H */

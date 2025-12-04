@@ -118,7 +118,10 @@ static void ProcessActor(word index)
             return;
         }
 
-        if (InteractPlayer(index, act->sprite, act->frame, act->x, act->y)) return;
+        if (InteractPlayer(index, act->sprite, act->frame, act->x, act->y)) {
+            /*if (playerHurtCooldown == 0 && pick_act>=999) { pick_act = index; launch(1,index); }*/
+            return;
+        } /*else pick_act = 9999;*/
     }
 
     if (nextDrawMode != DRAW_MODE_HIDDEN) {

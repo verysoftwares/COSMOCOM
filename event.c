@@ -13,6 +13,11 @@ void testhurt(void) {
     sprintf(sp,"%s%d%s","Hurt by actor #",hurt_act,"!");
     mid_box(sp,"","","");
 }
+void testpick(void) {
+    char sp[40];
+    sprintf(sp,"%s%d%s","Picked up actor #",pick_act,"!");
+    mid_box(sp,"","","");
+}
 
 typedef void (*EventFunc)(void);
 
@@ -133,6 +138,7 @@ void init_lv_events(word ln) {
     for (j=0; j<4; j++) { for (i=0; i<256; i++) {
         gen_evs[j][i] = testevent;
         if (j==0) gen_evs[j][i] = testhurt;
+        if (j==1) gen_evs[j][i] = testpick;
     }}
 
     switch (ln) {

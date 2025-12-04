@@ -104,6 +104,7 @@ bool TryPounce(int recoil)
 }
 
 word hurt_act = 9999;
+word pick_act = 9999;
 /*
 Cause the player pain, deduct health, and determine if the player becomes dead.
 */
@@ -1418,6 +1419,9 @@ infront:
     }
 }
 
+static void pick_event(word index) {
+    if (playerHurtCooldown == 0 && pick_act>=999) { pick_act = index; launch(1,index); }
+}
 /*
 Handle interactions between the player and the passed actor.
 
@@ -1762,7 +1766,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
         AddScoreForSprite(sprite_type);
         NewActor(ACT_SCORE_EFFECT_200, x, y);
         UpdateStars();
-        return true;
+        pick_event(index); return true;
 
     case SPR_ARROW_PISTON_W:
     case SPR_ARROW_PISTON_E:
@@ -1855,7 +1859,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
             AddScore(12800);
             NewActor(ACT_SCORE_EFFECT_12800, act->x, act->y);
         }
-        return true;
+        pick_event(index); return true;
 
     case SPR_GRN_TOMATO:
     case SPR_RED_TOMATO:
@@ -1866,7 +1870,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
         NewActor(ACT_SCORE_EFFECT_200, x, y);
         NewDecoration(SPR_SPARKLE_SHORT, 4, act->x, act->y, DIR8_NONE, 3);
         StartSound(SND_PRIZE);
-        return true;
+        pick_event(index); return true;
 
     case SPR_GRAPES:
     case SPR_DANCING_MUSHROOM:
@@ -1900,7 +1904,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
         }
         NewDecoration(SPR_SPARKLE_SHORT, 4, act->x, act->y, DIR8_NONE, 3);
         StartSound(SND_PRIZE);
-        return true;
+        pick_event(index); return true;
 
     case SPR_HAMBURGER:
         act->dead = true;
@@ -1914,7 +1918,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
             sawHamburgerBubble = true;
         }
         UpdateHealth();
-        return true;
+        pick_event(index); return true;
 
     case SPR_EXIT_SIGN:
         winLevel = true;
@@ -1935,7 +1939,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
             UpdateBombs();
             NewDecoration(SPR_SPARKLE_SHORT, 4, act->x, act->y, DIR8_NONE, 3);
             StartSound(SND_PRIZE);
-            return true;
+            pick_event(index); return true;
         }
         return false;
 
@@ -2092,7 +2096,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
         AddScore(3200);
         NewActor(ACT_SCORE_EFFECT_3200, x, y);
         StartSound(SND_PRIZE);
-        return true;
+        pick_event(index); return true;
 
     case SPR_BLU_CRYSTAL:
     case SPR_RED_CRYSTAL:
@@ -2101,7 +2105,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
         AddScore(1600);
         NewActor(ACT_SCORE_EFFECT_1600, x, y);
         StartSound(SND_PRIZE);
-        return true;
+        pick_event(index); return true;
 
     case SPR_CYA_DIAMOND:
     case SPR_RED_DIAMOND:
@@ -2113,7 +2117,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
         AddScore(800);
         NewActor(ACT_SCORE_EFFECT_800, x, y);
         StartSound(SND_PRIZE);
-        return true;
+        pick_event(index); return true;
 
     case SPR_BEAR_TRAP:
         if (act->data2 == 0 && act->x == playerX && act->y == playerY) {
@@ -2147,7 +2151,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
         /* BUG: score effect is spawned, but no score given */
         NewActor(ACT_SCORE_EFFECT_12800, x, y);
         StartSound(SND_BIG_PRIZE);
-        return true;
+        pick_event(index); return true;
 
     case SPR_MONUMENT:
         if (!sawMonumentBubble) {
