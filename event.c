@@ -27,10 +27,10 @@ typedef void (*EventFunc)(void);
  * well, the bottom line is i can still redirect an event
  * by just assigning a new function pointer to the slot.
  */ 
-/* word* */  EventFunc hurt_evs[256]; /* _ecat=0 */
-/* word* */  EventFunc pick_evs[256]; /* _ecat=1 */
-/* word* */  EventFunc jump_evs[256]; /* _ecat=2 */
-/* word* */  EventFunc bomb_evs[256]; /* _ecat=3 */
+/* word* */  EventFunc hurt_evs[MAX_ACTORS]; /* _ecat=0 */
+/* word* */  EventFunc pick_evs[MAX_ACTORS]; /* _ecat=1 */
+/* word* */  EventFunc jump_evs[MAX_ACTORS]; /* _ecat=2 */
+/* word* */  EventFunc bomb_evs[MAX_ACTORS]; /* _ecat=3 */
 /* word** */ EventFunc* gen_evs[4] = {hurt_evs,
                                       pick_evs,
                                       jump_evs,
@@ -135,7 +135,7 @@ void launch(word _ecat, word aid/*, word _eid*/) {
 
 void init_lv_events(word ln) {
     word i,j;
-    for (j=0; j<4; j++) { for (i=0; i<256; i++) {
+    for (j=0; j<4; j++) { for (i=0; i<MAX_ACTORS; i++) {
         gen_evs[j][i] = testevent;
         if (j==0) gen_evs[j][i] = testhurt;
         if (j==1) gen_evs[j][i] = testpick;
