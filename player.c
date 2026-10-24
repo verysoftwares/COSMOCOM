@@ -105,6 +105,7 @@ bool TryPounce(int recoil)
 
 word hurt_act = 9999;
 word pick_act = 9999;
+word jump_act = 9999;
 /*
 Cause the player pain, deduct health, and determine if the player becomes dead.
 */
@@ -753,11 +754,18 @@ bbool ProcessAndDrawPlayer(void)
             }
         }
 
-        if (playerHurtCooldown == 22 && pounceHintState != POUNCE_HINT_UNSEEN) {
+        if (playerHurtCooldown == 44-6 && pounceHintState != POUNCE_HINT_UNSEEN) {
             if (levelNum == 0) {
                 JustPrompt();
             } else {
-                if (hurt_act<999) launch(0,0);
+                if (hurt_act<999) launch(0,hurt_act);
+            }
+        }
+
+        if (playerPounceDelay>0) {
+            playerPounceDelay--;
+            if (playerPounceDelay==0 && jump_act<999) {
+                launch(2,jump_act);
             }
         }
 
@@ -1430,6 +1438,13 @@ static void pick_event(word index) {
         launch(1,index); 
     }
 }
+
+word playerPounceDelay = 0;
+static void pounce_start(word index) {
+    StartSound(SND_PLAYER_POUNCE); 
+    jump_act = index;
+    playerPounceDelay = 6;
+}
 /*
 Handle interactions between the player and the passed actor.
 
@@ -1477,7 +1492,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
         if (act->data5 != 0) break;  /* ceiling-mounted */
 
         if (act->hurtcooldown == 0 && TryPounce(40)) {
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             if (!sawJumpPadBubble) {
                 sawJumpPadBubble = true;
                 NewActor(ACT_SPEECH_WHOA, playerX - 1, playerY - 5);
@@ -1496,7 +1511,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_CABBAGE:
         if (act->hurtcooldown == 0 && TryPounce(7)) {
             act->hurtcooldown = 5;
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             nextDrawMode = DRAW_MODE_WHITE;
             act->data1--;
             if (act->data1 == 0) {
@@ -1513,6 +1528,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_BASKET:
     case SPR_BARREL:
         if (act->hurtcooldown == 0 && TryPounce(5)) {
+            pounce_start(index);
             DestroyBarrel(index);
             AddScore(100);
             NewActor(ACT_SCORE_EFFECT_100, act->x, act->y);
@@ -1524,7 +1540,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_MOON:
         if (act->hurtcooldown == 0 && TryPounce(7)) {
             act->hurtcooldown = 3;
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             act->data5--;
             nextDrawMode = DRAW_MODE_WHITE;
             if (act->data5 == 0) {
@@ -1545,7 +1561,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_SUCTION_WALKER:
     case SPR_BIRD:
         if (act->hurtcooldown == 0 && TryPounce(7)) {
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             act->dead = true;
             NewPounceDecoration(act->x, act->y);
             AddScoreForSprite(act->sprite);
@@ -1569,7 +1585,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
 
     case SPR_PARACHUTE_BALL:
         if (act->hurtcooldown == 0 && TryPounce(7)) {
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             act->data3 = 0;
             act->hurtcooldown = 3;
             act->data5--;
@@ -1605,7 +1621,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
 
     case SPR_RED_JUMPER:
         if (act->hurtcooldown == 0 && TryPounce(15)) {
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             act->hurtcooldown = 6;
             act->data5--;
             if (act->data5 == 0) {
@@ -1625,7 +1641,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_PUSHER_ROBOT:
         if (act->hurtcooldown == 0 && TryPounce(7)) {
             act->hurtcooldown = 3;
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             nextDrawMode = DRAW_MODE_WHITE;
             if (sprite_type != SPR_RED_CHOMPER) {
                 act->data5--;
@@ -1644,7 +1660,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_PINK_WORM:
         if (act->hurtcooldown == 0 && TryPounce(7)) {
             AddScoreForSprite(SPR_PINK_WORM);
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             NewPounceDecoration(act->x, act->y);
             act->dead = true;
             NewActor(ACT_PINK_WORM_SLIME, act->x, act->y);
@@ -1658,7 +1674,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
             act->hurtcooldown == 0 && TryPounce(15)
         ) {
             act->hurtcooldown = 3;
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             if (act->data1 != DIR2_WEST) {
                 act->frame = 7;
             } else {
@@ -1673,7 +1689,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
     case SPR_IVY_PLANT:
         if (act->hurtcooldown == 0 && TryPounce(7)) {
             pounceStreak = 0;
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             act->hurtcooldown = 5;
         } else if (act->hurtcooldown == 0 && IsTouchingPlayer(sprite_type, frame, x, y)) {
             HurtPlayer(index);
@@ -1682,7 +1698,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
 
     case SPR_ROCKET:
         if (act->x == playerX && act->hurtcooldown == 0 && TryPounce(5)) {
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
         }
         return false;
 
@@ -1693,7 +1709,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
                 isPlayerFalling = true;
                 isPounceReady = true;
                 act->hurtcooldown == 0 && TryPounce(20);
-                StartSound(SND_PLAYER_POUNCE);
+                pounce_start(index);
                 blockMovementCmds = false;
                 blockActionCmds = false;
                 playerFallTime = 0;
@@ -1737,7 +1753,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
 #endif  /* HAS_ACT_BOSS */
         ) {
             if (act->hurtcooldown == 0 && TryPounce(7)) {
-                StartSound(SND_PLAYER_POUNCE);
+                pounce_start(index);
                 act->data5++;
                 act->westfree = 10;
                 act->hurtcooldown = 7;
@@ -1974,7 +1990,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
                 word gifts[] = {ACT_RED_GOURD, ACT_RED_TOMATO, ACT_CLR_DIAMOND, ACT_GRN_EMERALD};
                 act->hurtcooldown = 10;
                 if (TryPounce(7)) {
-                    StartSound(SND_PLAYER_POUNCE);
+                    pounce_start(index);
                 } else {
                     playerClingDir = DIR4_NONE;
                 }
@@ -2181,7 +2197,7 @@ bool InteractPlayer(word index, word sprite_type, word frame, word x, word y)
             (!isPlayerFalling || isPlayerRecoiling)
         ) {
             act->hurtcooldown = 2;
-            StartSound(SND_PLAYER_POUNCE);
+            pounce_start(index);
             act->data1 = 3;
             playerRecoilLeft = 0;
             isPlayerRecoiling = false;

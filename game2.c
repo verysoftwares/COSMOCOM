@@ -2454,7 +2454,7 @@ Show the copyright year, version number, and abbreviated credits during startup.
 */
 void ShowCopyright(void)
 {
-    word x = UnfoldTextFrame(4, 13, 26, "Mod project by", "Copyright (c) 1992, 2025");
+    word x = UnfoldTextFrame(4, 13, 26, "Mod project by", "Copyright (c) 1992, 2026");
     DrawTextLine(x,      6,  "     Leonard Somero");
     DrawTextLine(x,      8,  "       Cosmore by");
     DrawTextLine(x,      9,  "     Scott Smitelli");

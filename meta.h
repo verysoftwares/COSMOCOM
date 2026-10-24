@@ -207,6 +207,8 @@ event.c
 */
 extern word hurt_act;
 extern word pick_act;
+extern word jump_act;
 extern word playerPickupCooldown;
+extern word playerPounceDelay;
 
 #endif /* #ifndef META_H */

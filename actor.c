@@ -129,6 +129,9 @@ static void ProcessActor(word index)
         if (1/*level_edit*/) {
             DrawNumber(index, act->x-scrollX+1, act->y-scrollY+2);
         }
+        if (level_edit) {
+            DrawNumber(act->type, act->x-scrollX+1, act->y-scrollY+3);
+        }
     }
 }
 
@@ -4529,16 +4532,16 @@ bbool NewActorAtIndex(word index, word actor_type, word x, word y)
         ConstructActor(SPR_TRANSPORTER, x, y, T, F, F, F, ActTransporter, 0, 0, 0, 0, 3);
         break;
     case ACT_HINT_GLOBE_1:
-        ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 1);
+        /* ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 1); */
         break;
     case ACT_HINT_GLOBE_2:
-        ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 2);
+        /* ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 2); */
         break;
     case ACT_HINT_GLOBE_3:
-        ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 3);
+        /* ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 3); */
         break;
     case ACT_HINT_GLOBE_4:
-        ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 4);
+        /* ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 4); */
         break;
     case ACT_HINT_GLOBE_5:
         ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 5);

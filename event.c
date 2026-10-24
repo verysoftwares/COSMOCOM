@@ -11,12 +11,37 @@ void testevent(void) {
 void testhurt(void) {
     char sp[40];
     sprintf(sp,"%s%d%s","Hurt by actor #",hurt_act,"!");
+    hurt_act = 9999; /* the easiest way to avoid self-bomb triggers */
     mid_box(sp,"","","");
 }
 void testpick(void) {
     char sp[40];
     sprintf(sp,"%s%d%s","Picked up actor #",pick_act,"!");
+    pick_act = 9999;
     mid_box(sp,"","","");
+}
+void testjump(void) {
+    char sp[40];
+    sprintf(sp,"%s%d%s","Pounced on actor #",jump_act,"!");
+    jump_act = 9999;
+    mid_box(sp,"","","");
+}
+char* choice_label(word n){
+    switch(n) {
+        case 0: return "T)upakka";
+        case 1: return "E)ristysselli";
+        case 2: return "P)sykkoosi";
+        case 3: return "P)apukaijanmerkki";
+        case 4: return "R)osvosektori";
+        default: return "MISSINGNO.";
+    }
+}
+void starpick(void) {
+    word choice1,choice2;
+    choice1 = random(5);
+    choice2 = random(5);
+    pick_act = 9999;
+    mid_box(choice_label(choice1),"   vai",choice_label(choice2),"    ?");
 }
 
 typedef void (*EventFunc)(void);
@@ -62,7 +87,7 @@ static EventFunc fetch_event_cache(EventFunc* ecat, word aid) {
      */
 
     if ( (aid<0) || (aid>MAX_ACTORS) ) return testevent;
-    if ( (actors + aid)->dead ) return testevent;
+    /* if ( (actors + aid)->dead ) return testevent; */
 
     /* so which event is actually being launched here. */
 
@@ -139,12 +164,17 @@ void init_lv_events(word ln) {
         gen_evs[j][i] = testevent;
         if (j==0) gen_evs[j][i] = testhurt;
         if (j==1) gen_evs[j][i] = testpick;
+        if (j==2) gen_evs[j][i] = testjump;
+        if (j==1 && (actors[i].type==ACT_STAR_FLOAT || actors[i].type==ACT_STAR)) {
+            gen_evs[j][i] = starpick;
+        }
     }}
-
     switch (ln) {
         case 9:
             /* assign hurt (_ecat=0) event, for actor no. 3, as 'void2'. */
-            assign(0,3,void2);
+            /* assign(0,3,void2); */
+            /*assign(1,263,starpick);
+            assign(1,237,starpick);*/
             break;
         default:
             break;
