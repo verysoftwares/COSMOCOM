@@ -427,6 +427,8 @@ void mid_box(char*, char*, char*, char*);
 
 void init_lv_events(word);
 void launch(word, word);
+void fetch(word);
+void qdisplay(void);
 
 /* maybe UI.C, miscobjs.C, audio.C, world.C */
 

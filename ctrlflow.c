@@ -111,6 +111,9 @@ static void GameLoop(byte demo_state)
         /*#endif*/  /* DEBUG_BAR */
         }
 
+        /* quest progress */
+        qdisplay();
+
         SelectDrawPage(activePage);
         activePage = !activePage;
         SelectActivePage(activePage);

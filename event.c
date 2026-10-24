@@ -28,20 +28,106 @@ void testjump(void) {
 }
 char* choice_label(word n){
     switch(n) {
-        case 0: return "T)upakka";
-        case 1: return "E)ristysselli";
-        case 2: return "P)sykkoosi";
-        case 3: return "P)apukaijanmerkki";
-        case 4: return "R)osvosektori";
+        case 0: return "        T)upakka";
+        case 1: return "      E)ristysselli";
+        case 2: return "       P)sykkoosi";
+        case 3: return "    P)apukaijanmerkki";
+        case 4: return "      R)osvosektori";
+        case 5: return "       H)ippiaate";
+        case 6: return "        S)impukka";
         default: return "MISSINGNO.";
     }
 }
 void starpick(void) {
     word choice1,choice2;
-    choice1 = random(5);
-    choice2 = random(5);
+    choice1 = random(7);
+    choice2 = random(7);
     pick_act = 9999;
-    mid_box(choice_label(choice1),"   vai",choice_label(choice2),"    ?");
+    mid_box(choice_label(choice1),"           vai",choice_label(choice2),"            ?");
+}
+word fetch_ids[4] = {160,214,215,216/*,225*/};
+typedef struct {
+    word n,id,sp,prog,src,type;
+} Quest;
+Quest quests[4]; word q=0;
+void fetch(word index) {
+    word i; for (i=0; i<q; i++) {
+        if (quests[i].id==actors[index].type) {
+            quests[i].prog++;
+        }
+    }
+}
+void qdisplay(void) {
+    word i; for (i=0; i<q; i++) {
+        char qprog[40]; char img[40];
+        ClearAreaGray(1+i*7,1,6,4);
+        if (quests[i].prog<quests[i].n) {
+            sprintf(qprog,"%d of %d",quests[i].prog,quests[i].n);
+            /* DrawSprite doesn't display anything, */
+            /* so i use the text parser instead. */
+            /*DrawSprite(quests[i].sp,0,i*8,0,DRAW_MODE_NORMAL);*/
+            sprintf(img, "%s%.3d000","\xFE",quests[i].sp);
+            DrawTextLine(1+i*7+2,3,img);
+            DrawTextLine(1+i*7,1+3,qprog);
+        } else {
+            sprintf(qprog," %d",quests[i].src);
+            /* DrawSprite doesn't display anything, */
+            /* so i use the text parser instead. */
+            /*DrawSprite(quests[i].sp,0,i*8,0,DRAW_MODE_NORMAL);*/
+            sprintf(img, "%s%.3d001","\xFE",124);
+            DrawTextLine(1+i*7+1,3,img);
+            DrawTextLine(1+i*7,1+3,qprog);
+        }
+    }
+}
+void wormjump(void) {
+    /* quests 
+     * collect x of these: <img>
+     */
+    if (q<4) {
+        if (actors[jump_act].data5==1) {
+            char qprompt[40]; word i; Quest newq; bool fresh;
+            newq.type = random(2);
+            newq.n = 3+random(3);
+            newq.prog = 0;
+            newq.src = jump_act;
+            do {
+                newq.id = fetch_ids[random(4)];
+                fresh = true;
+                for (i=0; i<q; i++) {
+                    if (quests[i].id==newq.id) {
+                        fresh = false;
+                        break;
+                    }
+                }
+            } while(!fresh);
+            for (i=0; i<MAX_ACTORS; i++) {
+                if (actors[i].type==newq.id) {
+                    newq.sp = actors[i].sprite;
+                    break;
+                }
+            }
+            mid_box("I have a quest for you...","","","");
+            sprintf(qprompt,"%s%d%s \xFE%.3d000"/* (%.3d)"*/,"Collect ",newq.n," of these:",newq.sp/*,quest_id*/);
+            mid_box(qprompt,"","","");
+            quests[q]=newq; q++;
+        } else if (actors[jump_act].data5==0) {
+            char qprompt[40]; word i; bool win=false;
+            for (i=0; i<q; i++) {
+                if (quests[i].src==jump_act && quests[i].prog>=quests[i].n) {
+                    win=true; break;
+                } 
+            }
+            if (win) {sprintf(qprompt,"         Superb!");} else {sprintf(qprompt,"          Fail!");}
+            mid_box("Finishing quest...","","",qprompt);
+            starpick();
+        } else {
+            mid_box("I never did","anything wroooong!","","");
+        } 
+    } else {
+        mid_box("Don't you already have","quite a few quests?","","");
+    }
+    jump_act = 9999;
 }
 
 typedef void (*EventFunc)(void);
@@ -167,6 +253,9 @@ void init_lv_events(word ln) {
         if (j==2) gen_evs[j][i] = testjump;
         if (j==1 && (actors[i].type==ACT_STAR_FLOAT || actors[i].type==ACT_STAR)) {
             gen_evs[j][i] = starpick;
+        }
+        if (j==2 && actors[i].type==ACT_PINK_WORM) {
+            gen_evs[j][i] = wormjump;
         }
     }}
     switch (ln) {

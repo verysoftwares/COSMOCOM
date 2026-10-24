@@ -210,5 +210,6 @@ extern word pick_act;
 extern word jump_act;
 extern word playerPickupCooldown;
 extern word playerPounceDelay;
+extern word q;
 
 #endif /* #ifndef META_H */

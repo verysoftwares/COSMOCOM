@@ -2756,10 +2756,10 @@ static void ActPinkWorm(word index)
 {
     Actor *act = actors + index;
 
-    if (act->data5 == 0) {  /* always true? */
+    /*if (act->data5 == 0) {*/  /* always true? */
         act->data4 = !act->data4;
         if (act->data4 != 0) return;
-    }
+    /*}*/
 
     if (random(40) > 37 && act->data3 == 0 && act->data2 == 0) {
         act->data3 = 4;
@@ -4296,7 +4296,7 @@ bbool NewActorAtIndex(word index, word actor_type, word x, word y)
         ConstructActor(SPR_FORCE_FIELD_HORIZ, x, y, T, F, F, F, ActForceField, 0, 0, 0, 0, 1);
         break;
     case ACT_PINK_WORM:
-        ConstructActor(SPR_PINK_WORM, x, y, F, T, T, F, ActPinkWorm, DIR2_WEST, 0, 0, 0, 0);
+        ConstructActor(SPR_PINK_WORM, x, y, F, T, T, F, ActPinkWorm, DIR2_WEST, 0, 0, 0, 2);
         break;
     case ACT_HINT_GLOBE_0:
         ConstructActor(SPR_HINT_GLOBE, x, y, F, F, F, F, ActHintGlobe, 0, 0, 0, 0, 0);
