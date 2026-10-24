@@ -420,6 +420,7 @@ Music *LoadMusicData(word, Music *);
 void JustPrompt(void);
 void void2(void);
 void mid_box(char*, char*, char*, char*);
+void choice_box(word, char*, word, char*);
 
 /*****************************************************************************
  * event.C                                                                   *

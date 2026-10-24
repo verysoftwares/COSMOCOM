@@ -297,3 +297,53 @@ void mid_box(char* _line1, char* _line2, char* _line3, char* _line4) {
 
     /*pick_act = 9999;*/
 }
+
+char* choice_label(word n){
+    switch(n) {
+        case 0: return "        T)upakka";
+        case 1: return "      E)ristysselli";
+        case 2: return "       P)sykkoosi";
+        case 3: return "    P)apukaijanmerkki";
+        case 4: return "      R)osvosektori";
+        case 5: return "       H)ippiaate";
+        case 6: return "        S)impukka";
+        default: return "MISSINGNO.";
+    }
+}
+void choice_box(word choice1, char* _line2, word choice2, char* _line4) {
+    int x; char* _line1; char* _line3;
+    char line1[40]; char line2[40]; 
+    char line3[40]; char line4[40]; 
+    byte key;
+
+    _line1 = choice_label(choice1);
+    _line3 = choice_label(choice2);
+    
+    EGA_MODE_LATCHED_WRITE();
+    SelectDrawPage(activePage);
+
+    x = UnfoldTextFrame(1, 11, 28, "COSMIC HINT!", "Press any key to exit.");
+    DrawTextLine(x+3-2, 8+1, "Press SPACE to hurry or");
+
+    if (_line1[0] != '\0') {
+        sprintf(line1, "%s%s%s","\xFC","003 ",_line1);
+        DrawTextLine(x, 4, line1);
+    }
+    if (_line2[0] != '\0') {
+        sprintf(line2, "%s%s%s","\xFC","003 ",_line2);
+        DrawTextLine(x, 5, line2);
+    }
+    if (_line3[0] != '\0') {
+        sprintf(line3, "%s%s%s","\xFC","003 ",_line3);
+        DrawTextLine(x, 6, line3);
+    }
+    if (_line4[0] != '\0') {
+        sprintf(line4, "%s%s%s","\xFC","003 ",_line4);
+        DrawTextLine(x, 7, line4);
+    }
+
+    key = WaitSpinner(x + 28-2-1, 9+1);
+    if ((choice1==2 || choice2==2) && key==SCANCODE_P) {
+        mid_box("xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxx");
+    }
+}

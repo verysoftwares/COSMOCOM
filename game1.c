@@ -2425,6 +2425,9 @@ void NewMapActorAtIndex(
     if (map_actor_type < 32) {
         switch (map_actor_type) {
         case SPA_PLAYER_START:
+            /* just force starting pos for now */
+            x_origin = 141; y_origin = 34;
+
             if (x_origin > mapWidth - 15) {
                 scrollX = mapWidth - SCROLLW;
             } else if ((int)x_origin - 15 >= 0 && mapYPower > 5) {

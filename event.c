@@ -26,24 +26,12 @@ void testjump(void) {
     jump_act = 9999;
     mid_box(sp,"","","");
 }
-char* choice_label(word n){
-    switch(n) {
-        case 0: return "        T)upakka";
-        case 1: return "      E)ristysselli";
-        case 2: return "       P)sykkoosi";
-        case 3: return "    P)apukaijanmerkki";
-        case 4: return "      R)osvosektori";
-        case 5: return "       H)ippiaate";
-        case 6: return "        S)impukka";
-        default: return "MISSINGNO.";
-    }
-}
 void starpick(void) {
     word choice1,choice2;
     choice1 = random(7);
     choice2 = random(7);
     pick_act = 9999;
-    mid_box(choice_label(choice1),"           vai",choice_label(choice2),"            ?");
+    choice_box(choice1,"           vai",choice2,"            ?");
 }
 word fetch_ids[4] = {160,214,215,216/*,225*/};
 typedef struct {
