@@ -26,7 +26,7 @@ void testjump(void) {
     jump_act = 9999;
     mid_box(sp,"","","");
 }
-void starpick(void) {
+void letterpick(void) {
     word choice1,choice2;
     choice1 = random(7);
     choice2 = random(7);
@@ -59,9 +59,6 @@ void qdisplay(void) {
             DrawTextLine(1+i*7,1+3,qprog);
         } else {
             sprintf(qprog," %d",quests[i].src);
-            /* DrawSprite doesn't display anything, */
-            /* so i use the text parser instead. */
-            /*DrawSprite(quests[i].sp,0,i*8,0,DRAW_MODE_NORMAL);*/
             sprintf(img, "%s%.3d001","\xFE",124);
             DrawTextLine(1+i*7+1,3,img);
             DrawTextLine(1+i*7,1+3,qprog);
@@ -72,49 +69,66 @@ void wormjump(void) {
     /* quests 
      * collect x of these: <img>
      */
-    if (q<4) {
-        if (actors[jump_act].data5==1) {
-            char qprompt[40]; word i; Quest newq; bool fresh;
-            newq.type = random(2);
-            newq.n = 3+random(3);
-            newq.prog = 0;
-            newq.src = jump_act;
-            do {
-                newq.id = fetch_ids[random(4)];
-                fresh = true;
-                for (i=0; i<q; i++) {
-                    if (quests[i].id==newq.id) {
-                        fresh = false;
-                        break;
-                    }
-                }
-            } while(!fresh);
-            for (i=0; i<MAX_ACTORS; i++) {
-                if (actors[i].type==newq.id) {
-                    newq.sp = actors[i].sprite;
+    if (actors[jump_act].data5==1) {
+        char qprompt[40]; word i; Quest newq; bool fresh;
+        if (q>=4) {
+            mid_box("Don't you already have","quite a few quests?","","");
+            return;
+        }
+        newq.type = random(2);
+        newq.n = 3+random(3);
+        newq.prog = 0;
+        newq.src = jump_act;
+        do {
+            newq.id = fetch_ids[random(4)];
+            fresh = true;
+            for (i=0; i<q; i++) {
+                if (quests[i].id==newq.id) {
+                    fresh = false;
                     break;
                 }
             }
-            mid_box("I have a quest for you...","","","");
-            sprintf(qprompt,"%s%d%s \xFE%.3d000"/* (%.3d)"*/,"Collect ",newq.n," of these:",newq.sp/*,quest_id*/);
-            mid_box(qprompt,"","","");
-            quests[q]=newq; q++;
-        } else if (actors[jump_act].data5==0) {
-            char qprompt[40]; word i; bool win=false;
-            for (i=0; i<q; i++) {
-                if (quests[i].src==jump_act && quests[i].prog>=quests[i].n) {
-                    win=true; break;
-                } 
+        } while(!fresh);
+        for (i=0; i<MAX_ACTORS; i++) {
+            if (actors[i].type==newq.id) {
+                newq.sp = actors[i].sprite;
+                break;
             }
-            if (win) {sprintf(qprompt,"         Superb!");} else {sprintf(qprompt,"          Fail!");}
-            mid_box("Finishing quest...","","",qprompt);
-            starpick();
-        } else {
-            mid_box("I never did","anything wroooong!","","");
-        } 
+        }
+        mid_box("I have a quest for you...","","","");
+        sprintf(qprompt,"%s%d%s \xFE%.3d000"/* (%.3d)"*/,"Collect ",newq.n," of these:",newq.sp/*,quest_id*/);
+        mid_box(qprompt,"","","");
+        quests[q]=newq; q++;
+    } else if (actors[jump_act].data5==0) {
+        char qprompt[40]; word i,j; bool win=false;
+        if (q>=4) {
+            bool hasquest=false;
+            for (i=0; i<q; i++) {
+                if (quests[i].src==jump_act) {
+                    hasquest=true; break;
+                }
+            }
+            if (!hasquest) {
+                mid_box("Don't you already have","quite a few quests?","","");
+                return;
+            }
+        }
+        for (i=0; i<q; i++) {
+            if (quests[i].src==jump_act && quests[i].prog>=quests[i].n) {
+                win=true; 
+                for (j=i+1; j<q; j++) {
+                    quests[j-1] = quests[j]; 
+                }
+                q--;
+                break;
+            } 
+        }
+        if (win) {sprintf(qprompt,"         Superb!");} else {sprintf(qprompt,"          Fail!");}
+        mid_box("Finishing quest...","","",qprompt);
+        letterpick();
     } else {
-        mid_box("Don't you already have","quite a few quests?","","");
-    }
+        mid_box("I never did","anything wroooong!","","");
+    } 
     jump_act = 9999;
 }
 
@@ -240,7 +254,7 @@ void init_lv_events(word ln) {
         if (j==1) gen_evs[j][i] = testpick;
         if (j==2) gen_evs[j][i] = testjump;
         if (j==1 && (actors[i].type==ACT_STAR_FLOAT || actors[i].type==ACT_STAR)) {
-            gen_evs[j][i] = starpick;
+            gen_evs[j][i] = letterpick;
         }
         if (j==2 && actors[i].type==ACT_PINK_WORM) {
             gen_evs[j][i] = wormjump;
