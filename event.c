@@ -15,10 +15,11 @@ void testhurt(void) {
     mid_box(sp,"","","");
 }
 void testpick(void) {
-    char sp[40];
+    /* char sp[40];
     sprintf(sp,"%s%d%s","Picked up actor #",pick_act,"!");
     pick_act = 9999;
-    mid_box(sp,"","","");
+    mid_box(sp,"","",""); */
+    pick_act = 9999;
 }
 void testjump(void) {
     char sp[40];
@@ -31,7 +32,7 @@ void letterpick(void) {
     choice1 = random(7);
     choice2 = random(7);
     pick_act = 9999;
-    choice_box(choice1,"           vai",choice2,"            ?");
+    choice_box(choice1,"          vai",choice2,"           ?");
 }
 word fetch_ids[4] = {160,214,215,216/*,225*/};
 typedef struct {

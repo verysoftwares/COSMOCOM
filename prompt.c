@@ -92,7 +92,7 @@ void JustPrompt(void) {
         DrawTextLine(x, 18, "\xFC""003 as you begin to introduce multiple");
         DrawTextLine(x, 19, "\xFC""003 perspectives, but my dude just take");
         DrawTextLine(x, 20, "\xFC""003 care of yourself first.");
-        WaitSpinner(x + 38-2-1, scrollH-2-1+6+1+1);+
+        WaitSpinner(x + 38-2-1, scrollH-2-1+6+1+1);
         now++;
         return;
     }
@@ -343,7 +343,76 @@ void choice_box(word choice1, char* _line2, word choice2, char* _line4) {
     }
 
     key = WaitSpinner(x + 28-2-1, 9+1);
+    if ((choice1==3 || choice2==3) && key==SCANCODE_P) {
+        StartSound(SND_BIG_PRIZE);
+        mid_box("Sait papukaijanmerkin!","Viimeinkin! Tata olen odottanut","koko elamani!","10000 points!");
+        AddScore(10000);
+    }
+    if ((choice1==4 || choice2==4) && key==SCANCODE_R) {
+        StartSound(SND_DESTROY_SATELLITE);
+        mid_box("Ja se on rrrrrosvosektori!","","","Points reset...");
+        gameScore = 0;
+        AddScore(0);
+    }
     if ((choice1==2 || choice2==2) && key==SCANCODE_P) {
-        mid_box("xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxx");
+        /* mid_box("xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxx"); */
+        x = UnfoldTextFrame(1, 1+1, 28, "", "");
+        x = UnfoldTextFrame(1+3+1, 3+1, 28, "", "");
+        x = UnfoldTextFrame(1+3+3+1+1+1, 1, 28, "", "");
+        x = UnfoldTextFrame(1, 1+1, 28, "", "");
+        DrawTextLine(x, 1+1, "\xFC""003 It's not a matter of saying \"I will");
+        WaitSpinner(x + 28-2-1, 1+1);
+        DrawTextLine(x, 1+2, "\xFC""003 survive\", because that was never in");
+        DrawTextLine(x, 1+3, "\xFC""003 doubt, and repeating that to myself");
+        DrawTextLine(x, 1+4, "\xFC""003 seems a little bit frightening from");
+        DrawTextLine(x, 1+5, "\xFC""003 the perspective of not having a");
+        DrawTextLine(x, 1+6, "\xFC""003 spiritual teacher present with you.");
+        x = UnfoldTextFrame(1+3+1, 3+1, 28, "", "");
+        DrawTextLine(x, 1+8, "\xFC""003 However you have come so far that");
+        DrawTextLine(x, 1+9, "\xFC""003 all such level of magic would offer");
+        DrawTextLine(x+1, 1+9, "\xFC""003 all such level of magic would offer");
+        DrawTextLine(x, 1+10, "\xFC""003 are some really expedient means to");
+        DrawTextLine(x, 1+11, "\xFC""003 get to where you find yourself now.");
+        DrawTextLine(x+1, 1+8, "\xFC""003 However you have come so far that");
+        WaitSpinner(x + 28-2-1, 3+1+1+1+1+1);
+        x = UnfoldTextFrame(1+3+3+1+1+1, 1, 28, "", "");
+        DrawTextLine(x, 1+13, "\xFC""003 Someone else needs these healing");
+        DrawTextLine(x, 1+14, "\xFC""003 powers more than you, or you");
+        DrawTextLine(x, 1+15, "\xFC""003 might've been at need for them");
+        DrawTextLine(x, 1+16, "\xFC""003 earlier, had you not persevered");
+        DrawTextLine(x, 1+17, "\xFC""003 through sheer careful patience.");
+        WaitSpinner(x + 28-2-1, 1+3+3+4+1+1+1);
+        WaitSpinner(x + 28-2-1+1, 1+3+3+4+1+1+1);
+        WaitSpinner(x + 28-2-1+1+1, 1+3+3+4+1+1+1);
+
+        x = UnfoldTextFrame(1, 11, 28, "COSMIC HINT!", "Press any key to exit.");
+        DrawTextLine(x+3-2, 8+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 Considering this you end");
+        DrawTextLine(x, 5, "\xFC""003 up closing the tab.");
+        WaitSpinner(x + 28-2-1, 9+1);
+
+        printf("The story is not an End yet!\nThe japanese Heart is not satisfied!\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.");  /* 22 of these */
+        ExitClean();
+    }
+    if ((choice1==5 || choice2==5) && key==SCANCODE_H) {
+        x = UnfoldTextFrame(1, scrollH-2+1+6+1, 38, "COSMIC HINT!", " Press any key to exit.");
+        DrawTextLine(x+6+1, scrollH-4+1+6+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 I'd say Terence McKenna stands as");
+        DrawTextLine(x, 5, "\xFC""003 an example of such a role model. He");
+        DrawTextLine(x, 6, "\xFC""003 is one type of genius, but not the");
+        DrawTextLine(x, 7, "\xFC""003 same type as Einstein, as Terence");
+        DrawTextLine(x, 8, "\xFC""003 didn't come up with another huge");
+        DrawTextLine(x, 9, "\xFC""003 innovation, he was more untangling");
+        DrawTextLine(x, 10, "\xFC""003 the traps previous innovations had");
+        DrawTextLine(x, 11, "\xFC""003 lead to.");
+        WaitSpinner(x + 38-2-1, scrollH-2-1+6+1+1);
+        x = UnfoldTextFrame(1, 11+1, 28, "COSMIC HINT!", "Press any key to exit.");
+        DrawTextLine(x+3-2, 8+1+1, "Press SPACE to hurry or");
+        DrawTextLine(x, 4, "\xFC""003 He was frighteningly good");
+        DrawTextLine(x, 5, "\xFC""003 at this, and his legacy");
+        DrawTextLine(x, 6, "\xFC""003 shall live on in Youtube");
+        DrawTextLine(x, 7, "\xFC""003 clips with really dist");
+        DrawTextLine(x, 8, "\xFC""003 racting background music.");
+        WaitSpinner(x + 28-2-1, 9+1+1);
     }
 }
